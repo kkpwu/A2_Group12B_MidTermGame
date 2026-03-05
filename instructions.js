@@ -1,7 +1,7 @@
 let rules =
   "• Drag colored squares into the grid to match the pattern.\n" +
   "• You have 60 seconds to finish.\n" +
-  "• Pop-ups will distract you—click them to dismiss!\n" +
+  "• Pop-ups will distract yo - click them to dismiss!\n" +
   "• Press SPACE to take a deep breath (Pause).\n" +
   "• Press r to restart the game.\n" +
   "• Match the grid perfectly to win.";
