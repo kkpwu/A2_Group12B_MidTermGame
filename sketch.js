@@ -9,7 +9,6 @@ let playerGrid = [];
 let firstSelected = -1;
 
 function preload() {
-  // Using the exact paths and extensions seen in your sidebar
   startBG = loadImage("assets/Title.Page.png");
   instructionsBG = loadImage("assets/Instructions.Page.png");
   gameBG = loadImage("assets/Game.Page.png");
@@ -55,7 +54,6 @@ function mousePressed() {
 }
 
 function keyPressed() {
-  // --- PAUSE TOGGLE (Spacebar) ---
   if (keyCode === 32) {
     if (gameState === "game") {
       gameState = "pause";
@@ -80,18 +78,15 @@ function keyPressed() {
 function randomizeTarget() {
   targetGrid = [];
   for (let i = 0; i < 25; i++) {
-    targetGrid.push(floor(random(palette.length))); //
+    targetGrid.push(floor(random(palette.length)));
   }
 }
 
 function randomizePlayerGrid() {
-  // 1. Copy everything from the targetGrid so the counts match
   playerGrid = [...targetGrid];
 
-  // 2. Shuffle the array (Fisher-Yates Shuffle)
   for (let i = playerGrid.length - 1; i > 0; i--) {
     let j = floor(random(i + 1));
-    // Swap elements
     let temp = playerGrid[i];
     playerGrid[i] = playerGrid[j];
     playerGrid[j] = temp;

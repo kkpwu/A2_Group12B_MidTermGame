@@ -1,9 +1,4 @@
-/**
- * lose.js
- */
-
 function drawLoseScreen() {
-  // 1. Draw your custom lose background loaded in sketch.js
   if (loseBG) {
     image(loseBG, 0, 0, width, height);
   } else {

@@ -7,7 +7,6 @@ let rules =
   "• Match the grid perfectly to win.";
 
 function drawInstructionsScreen() {
-  // Use the same background for consistency or a solid color
   image(instructionsBG, 0, 0, width, height);
 
   // Semi-transparent overlay to make text readable
@@ -23,6 +22,7 @@ function drawInstructionsScreen() {
   // Rules text
   textSize(20);
   textAlign(CENTER, CENTER);
+
   // Display the rules string you created
   text(rules, width / 2, height / 2, 500, 300);
 
@@ -31,8 +31,6 @@ function drawInstructionsScreen() {
   drawButton(width / 2, height / 2 + 150, "Back");
 }
 
-// Logic to handle clicking the 'Back' button
-// This needs to be added to the handleMouseClicks() logic
 function checkInstructionClicks() {
   if (gameState === "instructions") {
     // Check if Back button is clicked

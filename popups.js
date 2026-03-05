@@ -1,16 +1,10 @@
-/**
- * popups.js
- */
-
-let activePopups = []; // This stores all current popup objects
+let activePopups = [];
 let nextPopupTime = 0;
 
 function handlePopups() {
   if (gameState === "game") {
-    // Schedule the next popup even if one is already active
     if (millis() > nextPopupTime) {
       spawnPopup();
-      // Random delay between popups: 0.5 to 2.5 seconds
       nextPopupTime = millis() + random(500, 2500);
     }
   }
@@ -96,7 +90,7 @@ function checkPopupClicks() {
       mouseY < btnY + 15
     ) {
       activePopups.splice(i, 1); // Remove this specific popup
-      return true; // We handled the click
+      return true; // Indicate that we handled a popup click
     }
   }
   return false;

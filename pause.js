@@ -1,21 +1,14 @@
-/**
- * pause.js
- */
-
 function drawPauseScreen() {
   push();
-  // 1. Draw your custom Zen background first
   if (pauseBG) {
-    image(pauseBG, 0, 0, width, height); // This keeps your background image
+    image(pauseBG, 0, 0, width, height);
   }
 
   // 2. The Text Box
   rectMode(CENTER);
-
-  // Transparency: 245 is very solid (255 is total, 0 is clear)
   fill(255, 150);
   noStroke();
-  rect(400, 235, 400, 180, 20); // Rounded corners with a radius of 20
+  rect(400, 235, 400, 180, 20);
 
   // 3. Text - Adjusted to stay inside the higher box
   textAlign(CENTER, CENTER);

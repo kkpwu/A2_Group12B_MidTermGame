@@ -1,7 +1,3 @@
-/**
- * win.js
- */
-
 function drawWinScreen() {
   // 1. Draw your custom win background loaded in sketch.js
   if (winBG) {

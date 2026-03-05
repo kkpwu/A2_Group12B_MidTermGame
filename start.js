@@ -1,7 +1,3 @@
-/**
- * start.js - Handles the Title Screen and Mouse Interactions
- */
-
 function drawStartScreen() {
   push();
   rectMode(CENTER);
@@ -33,12 +29,9 @@ function handleMouseClicks() {
   }
 
   if (gameState === "start") {
-    // 1. Play Button Hitbox (Centered at 400, 300)
     if (mouseX > 300 && mouseX < 500 && mouseY > 270 && mouseY < 330) {
       startGame();
     }
-
-    // 2. Instructions Button Hitbox (Centered at 400, 380)
     if (mouseX > 300 && mouseX < 500 && mouseY > 350 && mouseY < 410) {
       gameState = "instructions";
     }
@@ -48,7 +41,6 @@ function handleMouseClicks() {
     if (mouseX > 20 && mouseX < 100 && mouseY > 20 && mouseY < 60) {
       exitToHome();
     } else {
-      // Only handle swaps if the Home button WASN'T clicked
       handleSwapInteraction();
     }
   } else if (gameState === "win" || gameState === "lose") {

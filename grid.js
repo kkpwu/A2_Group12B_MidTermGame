@@ -7,8 +7,8 @@ function drawMainGrid() {
   let gridSize = wholeWidth / 5;
 
   // These must be calculated exactly like this to stay centered
-  let startX = width / 2 - wholeWidth / 2; // 400 - 180 = 220
-  let startY = height / 2 - wholeWidth / 2 + 50; // 300 - 180 + 50 = 170
+  let startX = width / 2 - wholeWidth / 2;
+  let startY = height / 2 - wholeWidth / 2 + 50;
 
   // 2. Draw the Container (White background box)
   rectMode(CENTER);
@@ -27,7 +27,7 @@ function drawMainGrid() {
 
       if (index !== firstSelected) {
         strokeWeight(5);
-        stroke(0); // Solid black
+        stroke(0);
         fill(palette[playerGrid[index]]);
         square(xpos, ypos, gridSize);
       }
