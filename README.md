@@ -1,4 +1,4 @@
-# Title of Game
+# Midterm Game - Group 12B - Pixel Alignment: Stability Crisis
 
 ## Authors
 
@@ -6,54 +6,99 @@
 
 ## Description
 
+**Pixel Alignment: Stability Crisis** is an interactive experience inspired by the symptoms of **Generalized Anxiety Disorder (GAD)**. GAD is a chronic condition characterized by excessive, persistent, and difficult-to-control worry across multiple domains of life.
+
+The game mirrors this psychological state by tasking the player with a simple organizational goal (aligning the grid) while intentionally overwhelming them with "mental noise" in the form of relentless, intrusive system pop-ups. These distractions represent the "excessive worry" that interferes with daily tasks, forcing the player to manage constant interruptions while under the pressure of a depleting timer.
+
 ### Key Features:
 
--
+- **The Anxiety Engine**: A multi-threaded popup system that simulates the "difficult-to-control" nature of intrusive thoughts.
+- **Color-Swap Mechanics**: Represents the "primary task" the player is trying to focus on despite environmental/internal stressors.
+- **Dynamic Timer System**: Provides a constant baseline of pressure, common in chronic anxiety conditions.
+- **Zen Pause State**: A "Deep Breath" mechanic offering a brief, visual respite from the mechanical chaos.
 
 ---
 
--
-- ***
-
 ## Controls
+
+- **Mouse Click**: Select and swap tiles / Clear "Intrusive" pop-up errors.
+- **Spacebar**: Toggle Pause (Deep Breath mode).
+- **'R' or 'r' Key**: Restart the challenge.
+
+---
+
+## How to Run
+
+1. **Download the Project**: Ensure all files and the `/assets` folder are in a single directory.
+2. **Using VS Code (Recommended)**:
+   - Open the project folder in VS Code.
+   - Install the **Live Server** extension.
+   - Right-click `index.html` and select **"Open with Live Server"**.
+3. **Using a Browser**:
+   - Simply drag and drop `index.html` into any modern web browser.
+   - _Note: Live Server is preferred to avoid local security (CORS) issues with images._
 
 ---
 
 ## Technical Overview
 
-### Collision Logic
+### 1. Anxiety Simulation Architecture
 
-The game uses **AABB (Axis-Aligned Bounding Box)** logic. To allow the player to "slide" along walls, the collision check is performed twice per frame: once for the X-axis and once for the Y-axis.
+The core technical challenge was translating the persistent, difficult-to-control nature of GAD into a functional game loop.
 
-### Coordinate Systems
+- **Asynchronous Interruptions**: The `handlePopups()` function uses `millis()` rather than a simple frame count to trigger events, ensuring pop-ups appear based on real-time duration.
+- **Z-Index & Interaction Blocking**: To simulate how intrusive thoughts "bury" a primary task, pop-ups are stored in a dynamic array. The `handleMouseClicks()` function uses a conditional "guard" that prevents any grid interaction if `activePopups.length > 0`.
 
-- **World Coordinates**: The $4000 \times 3000$ arena where the player lives.
-- **Screen Coordinates**: The static overlay where the "Use WASD" instructions are displayed.
+### 2. State-Driven UI
+
+The game uses a global state machine to manage transitions:
+
+- **High-Stress (Game State)**: Characterized by a 60-second `setInterval` timer and high-frequency pop-up triggers.
+- **Low-Stress (Pause State)**: Triggered by the `Spacebar`, this state clears the screen and presents a "Zen" aesthetic (stone stacking) to represent a "Deep Breath" exercise.
 
 ---
 
 ## Project Structure
 
-- `sketch.js` - Core logic: input handling, camera, and the main draw loop.
-- `style.css` - Basic styling to center the canvas and remove scrollbars.
+### Core Logic
+
+- `sketch.js`: The central engine handling `setup()`, `draw()`, and global state switching.
+- `index.html`: Entry point linking all scripts.
+- `style.css`: Basic styling to center the $800 \times 600$ canvas.
+
+### Gameplay Mechanics
+
+- `grid.js`: Logic for the $5 \times 5$ interactive player grid.
+- `targetgrid.js`: Manages the generation of the goal pattern.
+- `popups.js`: The "Anxiety Engine" managing the array of intrusive windows.
+- `game.js`: Shared gameplay utilities and session initialization.
+
+### State Screens
+
+- `start.js`: Title screen and menu hitboxes.
+- `pause.js`: The Zen-themed "Deep Breath" overlay.
+- `instructions.js`: Tutorial and control guide.
+- `win.js` / `lose.js`: Victory and defeat screen UIs.
 
 ---
 
 ## Assets
 
-**N/A**
+All graphical assets are located in the `/assets` folder:
+
+- `Title.Page.png`, `Game.Page.png`, `Pause.Page.png`, `Instructions.Page.png`, `Win.Page.png`, `Lose.Page.png`.
 
 ## GenAI
 
 The code was written by **Karen Wu**, with the following AI assistance:
 
-- **Grammarly**: Used to refine and clarify code comments.
-- **Gemini AI**: Used to debug logical errors and fix code bugs.
+- **Grammarly**: Refining code comments and documentation.
+- **Gemini AI**: Debugging logical errors, implementing the pop-up array system, and architectural optimization.
 
 ---
 
 ## 🛠️ Tech Stack & Concepts
 
-- **p5.js Library**: Used for the rendering engine.
-- **Coordinate Mapping**: Translating matrix indices to pixel values.
-- **JSON Integration**: Asynchronous loading of level data.
+- **p5.js Library**: Rendering engine.
+- **State Management**: Managing transitions between stress levels.
+- **Array Manipulation**: Managing the lifecycle of dynamic UI elements.
