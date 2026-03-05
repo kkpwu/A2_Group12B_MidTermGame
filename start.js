@@ -3,6 +3,16 @@ function drawStartScreen() {
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
 
+  // --- GAME TITLE ---
+  fill(255);
+  textSize(70);
+  textStyle(BOLD);
+  text("PIXEL ALIGNMENT", 400, 180);
+
+  textSize(45);
+  fill(200);
+  text("A Stability Crisis", 400, 235);
+
   // --- PLAY BUTTON ---
   fill(255, 150); // Semi-transparent white
   noStroke();
