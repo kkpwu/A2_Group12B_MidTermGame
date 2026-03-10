@@ -1,11 +1,11 @@
 let activePopups = [];
-let nextPopupTime = 0;
+let nextPopupTime = 10000; // First popup after 5 seconds
 
 function handlePopups() {
   if (gameState === "game") {
     if (millis() > nextPopupTime) {
       spawnPopup();
-      nextPopupTime = millis() + random(500, 2500);
+      nextPopupTime = millis() + random(650, 2500);
     }
   }
 }

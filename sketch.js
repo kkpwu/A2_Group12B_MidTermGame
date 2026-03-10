@@ -30,6 +30,9 @@ function draw() {
   if (gameState === "start") {
     if (startBG) image(startBG, 0, 0, width, height);
     drawStartScreen();
+  } else if (gameState === "tutorial") {
+    if (gameBG) image(gameBG, 0, 0, width, height);
+    drawTutorialScreen();
   } else if (gameState === "game") {
     if (gameBG) image(gameBG, 0, 0, width, height);
     drawGameScreen();

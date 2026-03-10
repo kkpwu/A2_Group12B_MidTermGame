@@ -3,6 +3,11 @@ function drawGameScreen() {
   drawMainGrid(); // Found in grid.js
   drawTargetGrid(); // Found in targetgrid.js
   drawHomeButton(); // Found in grid.js
+
+  // Target Grid (Top Right)
+  fill(255);
+  textSize(14);
+  text("TARGET", width * 0.85 + 15, height * 0.2 - 55);
 }
 
 function drawTimerUI() {
