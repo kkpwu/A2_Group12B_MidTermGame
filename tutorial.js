@@ -17,11 +17,7 @@ function drawTutorialScreen() {
     125,
   );
 
-  // --- MAIN PLAYER GRID (Tutorial Version) ---
   drawTutorialMainGrid();
-
-  // --- TARGET GRID (Top Right) ---
-  // Using a smaller version of the same logic
   drawTargetPreview(width * 0.85, 120, 120);
 
   drawSkipButton();

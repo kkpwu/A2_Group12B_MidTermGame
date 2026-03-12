@@ -1,104 +1,77 @@
-# Midterm Game - Group 12B - Pixel Alignment: Stability Crisis
+# Pixel Alignment: Stability Crisis
 
-## Authors
+## 1. Project Title
 
-**Group 12B, Karen Wu (21020152), Matthew Spong (21089661) and Frank Le (21068318)**
+**Pixel Alignment: Stability Crisis**
 
-## Description
+## 2. Group Number
 
-**Pixel Alignment: Stability Crisis** is an interactive experience inspired by the symptoms of **Generalized Anxiety Disorder (GAD)**. GAD is a chronic condition characterized by excessive, persistent, and difficult-to-control worry across multiple domains of life.
+**Group 12B** _Members: Karen Wu, Matthew Spong, Frank Le_
 
-The game mirrors this psychological state by tasking the player with a simple organizational goal (matching the main grid to the target grid) while intentionally overwhelming them with "mental noise" in the form of relentless, intrusive system pop-ups. These distractions represent the "excessive worry" that interferes with daily tasks, forcing the player to manage constant interruptions while under the pressure of a depleting timer.
+## 3. Description
 
-### Key Features:
+**Pixel Alignment: Stability Crisis** is a serious game developed in p5.js that translates the clinical symptoms of **Generalized Anxiety Disorder (GAD)** into interactive gameplay.
 
-- **The Anxiety Engine**: A multi-threaded popup system that simulates the "difficult-to-control" nature of intrusive thoughts.
-- **Color-Swap Mechanics**: Represents the "primary task" the player is trying to focus on despite environmental/internal stressors.
-- **Dynamic Timer System**: Provides a constant baseline of pressure, common in chronic anxiety conditions.
-- **Zen Pause State**: A "Deep Breath" mechanic offering a brief, visual respite from the mechanical chaos.
+- **Concept:** The game explores the "Worry Loop"—the intersection of chronic pressure, intolerance of uncertainty, and intrusive thoughts.
+- **Mechanics:** Players engage in a core **Pattern Matching** task, swapping tiles on a randomized grid to match a target. This focus is disrupted by the **"Anxiety Engine,"** a system of relentless, intrusive pop-up errors that block the player’s view and interaction.
+- **Player Experience:** By combining a 60-second "Fight-or-Flight" timer with unavoidable interruptions, the game creates a high-stress environment that builds empathy for the functional impairment experienced by those with GAD.
 
----
+## 4. Setup and Interaction Instructions
 
-## Controls
+### Setup
 
-- **Mouse Click**: Select and swap tiles / Clear "Intrusive" pop-up errors.
-- **Spacebar**: Toggle Pause (Deep Breath mode).
-- **'R' or 'r' Key**: Restart the challenge.
+1.  **Download:** Ensure all project files and the `/assets` folder are in a single directory.
+2.  **Run via VS Code (Recommended):** \* Open the project folder in VS Code.
+    - Install the **Live Server** extension.
+    - Right-click `index.html` and select **"Open with Live Server"**.
+3.  **Run via Browser:** Drag and drop `index.html` into a modern web browser. _Note: Live Server is preferred to prevent local CORS issues with assets._
 
----
+### Interaction
 
-## How to Run
+- **Mouse Click:** Swap grid tiles and click "Close" buttons on pop-up errors.
+- **Spacebar:** Toggle **Zen Pause** (Deep Breath mode) to reset the visual field and pause the countdown.
+- **'R' Key:** Restart the challenge at any time.
 
-1. **Download the Project**: Ensure all files and the `/assets` folder are in a single directory.
-2. **Using VS Code (Recommended)**:
-   - Open the project folder in VS Code.
-   - Install the **Live Server** extension.
-   - Right-click `index.html` and select **"Open with Live Server"**.
-3. **Using a Browser**:
-   - Simply drag and drop `index.html` into any modern web browser.
-   - _Note: Live Server is preferred to avoid local security (CORS) issues with images._
+## 5. Iteration Notes
 
----
+### a. Post-Playtest (Changes made based on March 5th session)
 
-## Technical Overview
+1.  **Interaction Guard:** Implemented a logical "guard" in the code that prevents players from interacting with the grid while pop-ups are active, simulating the "blocking" nature of intrusive thoughts.
+2.  **Visual Clarity:** Increased the contrast and hitbox size of the "Close" buttons on pop-up windows based on peer feedback regarding difficulty under pressure.
+3.  **Instructional Bridge:** Added a dedicated "Instructions" state between the Start screen and Game screen to allow players to process the mechanics before the stress-timer begins.
 
-### 1. Anxiety Simulation Architecture
+### b. Post-Showcase (Planned Improvements)
 
-The core technical challenge was translating the persistent, difficult-to-control nature of GAD into a functional game loop.
+1.  **Multi-Channel Affordances:** Adding unique icons/shapes to each color tile to ensure the game is fully accessible for color-blind users (Redundancy beyond color).
+2.  **Dynamic Anxiety Scaling:** Implementing a system where the "Anxiety Engine" frequency increases as the player gets closer to a perfect grid match, modeling escalating anxiety.
 
-- **Asynchronous Interruptions**: The `handlePopups()` function uses `millis()` rather than a simple frame count to trigger events, ensuring pop-ups appear based on real-time duration.
-- **Z-Index & Interaction Blocking**: To simulate how intrusive thoughts "bury" a primary task, pop-ups are stored in a dynamic array. The `handleMouseClicks()` function uses a conditional "guard" that prevents any grid interaction if `activePopups.length > 0`.
+## 6. Assets
 
-### 2. State-Driven UI
+All visual assets and code were created by Group 12B specifically for this project, except for the following:
 
-The game uses a global state machine to manage transitions:
+- **Zen Stone Imagery:** Original digital composition created by Group 12B, 2026.
+- **UI Assets:** Custom window renders designed in p5.js by Karen Wu.
 
-- **High-Stress (Game State)**: Characterized by a 60-second `setInterval` timer and high-frequency pop-up triggers.
-- **Low-Stress (Pause State)**: Triggered by the `Spacebar`, this state clears the screen and presents a "Zen" aesthetic (stone stacking) to represent a "Deep Breath" exercise.
+## 7. References
 
----
+### a. Academic References
 
-## Project Structure
+Academic References for GAD Research (ACM Format)
+[1] Alaa Abd-alrazaq et al. 2022. Effectiveness of serious games for anxiety: A systematic review and meta-analysis. _JMIR Serious Games_ 10, 2 (2022).
+[2] Evelyn Behar, Ilyse Dobrow DiMarco, Eric B. Hekler, Jan Mohlman, and Alison M. Staples. 2009. Current theoretical models of generalized anxiety disorder (GAD): Conceptual review and treatment implications. _Journal of Anxiety Disorders_ 23 (2009), 1011–1023.
+[3] Benjamin K. et al. 2022. Effects of symptom-simulation interventions on mental health stigma. _JMIR Serious Games_ 10, 2 (2022).
+[4] Jinghe Cai et al. 2023. CatHill: An emotion-based interactive storytelling game leveraging cognitive behavioral therapy techniques. In _Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems_. ACM.
+[5] Amanda Ferchaud, Nicholas D. Bowman, and Ashley C. Calhoun. 2020. Reducing mental health stigma through identification and transportation in video games. _Frontiers in Psychology_ 11 (2020).
+[6] Johns Hopkins Medicine. n.d. Generalized Anxiety Disorder.
+[7] María J. Martínez et al. 2020. Effect of an intervention combining technological resources with a talk by a professional and contact with persons with lived experiences of mental health problems. _Frontiers in Psychology_ 11 (2020), 2240.
+[8] Luca Milani et al. 2023. ReWIND: Integrating cognitive behavioral therapy constructs into a story-based serious role-playing game for anxiety. _International Journal of Serious Games_ 10, 3 (2023).
+[9] Aneesh K. Mishra and Anuj R. Varma. 2023. A Comprehensive Review of the Generalized Anxiety Disorder. _Cureus_ 15, 9 (2023), e46115.
+[10] National Institute of Mental Health. n.d. Generalized Anxiety Disorder: What You Need to Know.
+[11] NHS. n.d. Generalised anxiety disorder (GAD).
+[12] Neil A. Rector, Danielle Bourdeau, Kate Kitchen, Linda Joseph-Massiah, and Judith M. Laposa. 2024. Anxiety Disorders: An Information Guide. _Centre for Addiction and Mental Health_.
+[13] Piyathida Siriaraya et al. 2021. A framework for gamification design in mental health care. _Games for Health Journal_ 10, 4 (2021), 279–293.
 
-### Core Logic
+### b. Additional Relevant Sources
 
-- `sketch.js`: The central engine handling `setup()`, `draw()`, and global state switching.
-- `index.html`: Entry point linking all scripts.
-- `style.css`: Basic styling to center the $800 \times 600$ canvas.
-
-### Gameplay Mechanics
-
-- `grid.js`: Logic for the $5 \times 5$ interactive player grid.
-- `targetgrid.js`: Manages the generation of the goal pattern.
-- `popups.js`: The "Anxiety Engine" managing the array of intrusive windows.
-- `game.js`: Shared gameplay utilities and session initialization.
-
-### State Screens
-
-- `start.js`: Title screen and menu hitboxes.
-- `pause.js`: The Zen-themed "Deep Breath" overlay.
-- `instructions.js`: Tutorial and control guide.
-- `win.js` / `lose.js`: Victory and defeat screen UIs.
-
----
-
-## Assets
-
-All graphical assets are located in the `/assets` folder:
-
-- `Title.Page.png`, `Game.Page.png`, `Pause.Page.png`, `Instructions.Page.png`, `Win.Page.png`, `Lose.Page.png`.
-
-## GenAI
-
-The code was written by **Karen Wu**, with the following AI assistance:
-
-- **Grammarly**: Refining code comments and documentation.
-- **Gemini AI**: Debugging logical errors, implementing the pop-up array system, and architectural optimization.
-
----
-
-## 🛠️ Tech Stack & Concepts
-
-- **p5.js Library**: Rendering engine.
-- **State Management**: Managing transitions between stress levels.
-- **Array Manipulation**: Managing the lifecycle of dynamic UI elements.
+- Centre for Addiction and Mental Health (CAMH). 2024. _Anxiety Disorders: An Information Guide._
+- National Institute of Mental Health (NIMH). n.d. _Generalized Anxiety Disorder: What You Need to Know._
