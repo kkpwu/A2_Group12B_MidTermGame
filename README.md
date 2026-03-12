@@ -34,16 +34,16 @@
 
 ## 5. Iteration Notes
 
-### a. Post-Playtest (Changes made based on March 5th session)
+### a. Post-Playtest
 
-1.  **Interaction Guard:** Implemented a logical "guard" in the code that prevents players from interacting with the grid while pop-ups are active, simulating the "blocking" nature of intrusive thoughts.
-2.  **Visual Clarity:** Increased the contrast and hitbox size of the "Close" buttons on pop-up windows based on peer feedback regarding difficulty under pressure.
-3.  **Instructional Bridge:** Added a dedicated "Instructions" state between the Start screen and Game screen to allow players to process the mechanics before the stress-timer begins.
+1.  **Grid Scale Optimization:** Reduced the grid size from its original dimensions to ensure better visibility and alignment across different screen resolutions, resolving reported scaling issues.
+2.  **Anxiety Engine Refinement:** Reduced the frequency of pop-up overrides. Playtest data showed that the initial "Anxiety Spike" was too aggressive, preventing players from learning the core mechanics.
+3.  **Interaction Guard:** Implemented a logical "guard" that prevents players from interacting with the grid while pop-ups are active, ensuring the "blocking" nature of intrusive thoughts is felt mechanically.
 
-### b. Post-Showcase (Planned Improvements)
+### b. Post-Showcase
 
-1.  **Multi-Channel Affordances:** Adding unique icons/shapes to each color tile to ensure the game is fully accessible for color-blind users (Redundancy beyond color).
-2.  **Dynamic Anxiety Scaling:** Implementing a system where the "Anxiety Engine" frequency increases as the player gets closer to a perfect grid match, modeling escalating anxiety.
+1.  **Complexity Scaling:** Implementing more complex interaction layers, such as requiring specific sequences of clicks or "held" keys to clear advanced anxiety pop-ups, moving beyond simple click-to-close.
+2.  **Multi-Channel Affordances:** Adding unique symbols/icons to
 
 ## 6. Assets
 
