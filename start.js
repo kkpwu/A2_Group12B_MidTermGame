@@ -55,7 +55,6 @@ function handleMouseClicks() {
   }
   // --- 2. START STATE ---
   else if (gameState === "start") {
-    // Added 'else' here
     let cx = width / 2;
     let cy = height / 2;
     if (
