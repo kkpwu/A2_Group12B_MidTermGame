@@ -38,7 +38,7 @@ function handleMouseClicks() {
     return;
   }
 
-  // --- TUTORIAL STATE ---
+  // --- 1. TUTORIAL STATE ---
   if (gameState === "tutorial") {
     let skipX = width - 100;
     let skipY = height / 2;
@@ -50,14 +50,14 @@ function handleMouseClicks() {
     ) {
       startRealGame();
     } else {
-      handleSwapInteractionTutorial(); // This now handles the 3x3 grid
+      handleSwapInteractionTutorial();
     }
   }
-  // --- START STATE ---
+  // --- 2. START STATE ---
   else if (gameState === "start") {
+    // Added 'else' here
     let cx = width / 2;
     let cy = height / 2;
-    // Updated to use relative positioning for the start buttons
     if (
       mouseX > cx - 100 &&
       mouseX < cx + 100 &&
@@ -65,8 +65,7 @@ function handleMouseClicks() {
       mouseY < cy + 30
     ) {
       startGame();
-    }
-    if (
+    } else if (
       mouseX > cx - 100 &&
       mouseX < cx + 100 &&
       mouseY > cy + 50 &&
@@ -75,24 +74,24 @@ function handleMouseClicks() {
       gameState = "instructions";
     }
   }
-  // --- INSTRUCTIONS STATE ---
+  // --- 3. INSTRUCTIONS STATE ---
   else if (gameState === "instructions") {
     checkInstructionClicks();
   }
-  // --- GAME STATE ---
+  // --- 4. GAME STATE ---
   else if (gameState === "game") {
+    // Check Home Button
     if (mouseX > 20 && mouseX < 100 && mouseY > 20 && mouseY < 60) {
       exitToHome();
     } else {
-      handleSwapInteraction(); // Main 5x5 logic
+      handleSwapInteraction();
     }
   }
-  // --- END STATES ---
+  // --- 5. END STATES ---
   else if (gameState === "win" || gameState === "lose") {
     let btnX = width / 2;
     let btnY = height / 2 + 70;
 
-    // Check if the mouse click is within the "TRY AGAIN" button boundaries
     if (
       mouseX > btnX - 100 &&
       mouseX < btnX + 100 &&
@@ -100,36 +99,10 @@ function handleMouseClicks() {
       mouseY < btnY + 25
     ) {
       firstSelected = -1;
-      cursor(ARROW); // Reset the cursor immediately
-
-      // THE FIX: Direct the player to the game, not the start menu
-      if (gameState === "lose") {
-        startRealGame();
-      } else {
-        gameState = "start"; // Wins can still go back to menu
-      }
+      cursor(ARROW);
+      startRealGame(); // This takes you straight to 5x5
     }
   }
-}
-
-function startRealGame() {
-  gameState = "game";
-  timer = 60; // Reset the clock to full time
-  firstSelected = -1;
-
-  // This uses your 5x5 layout logic
-  initGrid(5);
-
-  // Start the timer countdown
-  if (timerInterval) clearInterval(timerInterval);
-  timerInterval = setInterval(timeIt, 1000);
-}
-
-// Helper function to reset the game state when leaving
-function exitToHome() {
-  firstSelected = -1;
-  if (timerInterval) clearInterval(timerInterval); // Stop the clock!
-  gameState = "start";
 }
 
 function handleSwapInteraction() {
@@ -220,10 +193,24 @@ function checkTutorialWin() {
   }
 }
 
+function checkWin() {
+  let match = true;
+  for (let i = 0; i < playerGrid.length; i++) {
+    if (playerGrid[i] !== targetGrid[i]) {
+      match = false;
+      break;
+    }
+  }
+  if (match) {
+    clearInterval(timerInterval);
+    gameState = "win";
+  }
+}
+
 function startGame() {
   gameState = "tutorial";
   isPopupActive = false;
-  timer = 60; // Or whatever tutorial time you want
+  timer = 60;
   firstSelected = -1;
 
   initGrid(5); // Initialize the 5x5 tutorial grid
@@ -232,19 +219,37 @@ function startGame() {
 function initGrid(size) {
   let totalTiles = size * size;
   targetGrid = [];
+
+  // Create a new random target pattern
   for (let i = 0; i < totalTiles; i++) {
     targetGrid.push(floor(random(palette.length)));
   }
-  randomizePlayerGrid();
+
+  // Copy target to player grid so the puzzle is solvable
+  playerGrid = [...targetGrid];
+
+  // Scramble the player's tiles (Fisher-Yates Shuffle)
+  for (let i = playerGrid.length - 1; i > 0; i--) {
+    let j = floor(random(i + 1));
+    let temp = playerGrid[i];
+    playerGrid[i] = playerGrid[j];
+    playerGrid[j] = temp;
+  }
 }
 
 function startRealGame() {
-  gameState = "game";
-  timer = 60;
-  firstSelected = -1;
+  console.log("Restarting Real Game..."); // This helps you see if the click worked
 
-  initGrid(5); // This handles both randomizeTarget and randomizePlayerGrid
+  gameState = "game"; // 1. Change the screen to the 5x5 game
+  timer = 60; // 2. Reset the clock
+  firstSelected = -1; // 3. Clear any selected tiles
 
+  // 4. Create the 5x5 grid (25 tiles)
+  initGrid(5);
+
+  // 5. Reset and restart the timer interval
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(timeIt, 1000);
+
+  cursor(ARROW); // 6. Fix the cursor so it's not a 'hand' anymore
 }

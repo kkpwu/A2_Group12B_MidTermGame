@@ -12,6 +12,7 @@ function preload() {
   startBG = loadImage("assets/Title.Page.png");
   instructionsBG = loadImage("assets/Instructions.Page.png");
   gameBG = loadImage("assets/Game.Page.png");
+  tutorialBG = loadImage("assets/Tutorial.Page.png");
   winBG = loadImage("assets/Win.Page.png");
   loseBG = loadImage("assets/Lose.Page.png");
   pauseBG = loadImage("assets/Pause.Page.png");
@@ -31,7 +32,7 @@ function draw() {
     if (startBG) image(startBG, 0, 0, width, height);
     drawStartScreen();
   } else if (gameState === "tutorial") {
-    if (gameBG) image(gameBG, 0, 0, width, height);
+    if (tutorialBG) image(tutorialBG, 0, 0, width, height);
     drawTutorialScreen();
   } else if (gameState === "game") {
     if (gameBG) image(gameBG, 0, 0, width, height);

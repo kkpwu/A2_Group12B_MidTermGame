@@ -3,10 +3,6 @@ function drawTutorialScreen() {
   let cy = height / 2;
 
   // --- UI TEXT ---
-  noStroke();
-  fill(30, 30, 30);
-  rect(100, 36, 550, 200);
-
   fill(255);
   textAlign(CENTER, CENTER);
   textSize(50);
