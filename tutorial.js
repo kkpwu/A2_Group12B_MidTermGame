@@ -25,6 +25,7 @@ function drawTutorialScreen() {
   drawTargetPreview(width * 0.85, 120, 120);
 
   drawSkipButton();
+  drawHomeButton();
 }
 
 function drawTutorialMainGrid() {
@@ -160,4 +161,41 @@ function checkTutorialWin() {
   if (match) {
     startRealGame(); // This moves them to the 5x5 game
   }
+}
+
+function drawHomeButton() {
+  push();
+  rectMode(CENTER);
+  textAlign(CENTER, CENTER);
+
+  // Position: Top left corner (adjust as needed for your Game.Page.png)
+  let btnX = 60;
+  let btnY = 40;
+  let btnW = 80;
+  let btnH = 40;
+
+  // Hover Effect
+  if (
+    mouseX > btnX - btnW / 2 &&
+    mouseX < btnX + btnW / 2 &&
+    mouseY > btnY - btnH / 2 &&
+    mouseY < btnY + btnH / 2
+  ) {
+    fill(200); // Gray on hover
+    cursor(HAND);
+  } else {
+    fill(255); // White normally
+    cursor(ARROW);
+  }
+
+  stroke(0);
+  strokeWeight(2);
+  rect(btnX, btnY, btnW, btnH, 10);
+
+  // Home Icon or Text
+  noStroke();
+  fill(0);
+  textSize(16);
+  text("HOME", btnX, btnY);
+  pop();
 }

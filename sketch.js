@@ -99,8 +99,8 @@ function timeIt() {
     if (timer > 0) {
       timer--;
     } else {
-      clearInterval(timerInterval);
       gameState = "lose";
+      clearInterval(timerInterval);
     }
   }
 }

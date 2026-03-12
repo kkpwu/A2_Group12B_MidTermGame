@@ -40,13 +40,13 @@ function handleMouseClicks() {
 
   // --- 1. TUTORIAL STATE ---
   if (gameState === "tutorial") {
-    let skipX = width - 100;
-    let skipY = height / 2;
-    if (
-      mouseX > skipX - 60 &&
-      mouseX < skipX + 60 &&
-      mouseY > skipY - 25 &&
-      mouseY < skipY + 25
+    if (mouseX > 20 && mouseX < 100 && mouseY > 20 && mouseY < 60) {
+      exitToHome();
+    } else if (
+      mouseX > width - 160 &&
+      mouseX < width - 40 &&
+      mouseY > height / 2 - 25 &&
+      mouseY < height / 2 + 25
     ) {
       startRealGame();
     } else {
@@ -97,9 +97,14 @@ function handleMouseClicks() {
       mouseY > btnY - 25 &&
       mouseY < btnY + 25
     ) {
+      // RESET LOGIC
       firstSelected = -1;
-      cursor(ARROW);
-      startRealGame(); // This takes you straight to 5x5
+      if (timerInterval) clearInterval(timerInterval); // Kill the old timer
+
+      gameState = "start"; // Take them back to the Menu
+      cursor(ARROW); // Fix the cursor
+
+      console.log("Returning to Main Menu...");
     }
   }
 }
@@ -237,18 +242,27 @@ function initGrid(size) {
 }
 
 function startRealGame() {
-  console.log("Restarting Real Game..."); // This helps you see if the click worked
+  console.log("Restarting Real Game...");
 
-  gameState = "game"; // 1. Change the screen to the 5x5 game
-  timer = 60; // 2. Reset the clock
-  firstSelected = -1; // 3. Clear any selected tiles
+  // 1. Force stop ANY existing timer before doing anything else
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
 
-  // 4. Create the 5x5 grid (25 tiles)
-  initGrid(5);
+  // 2. Reset the data
+  timer = 60;
+  firstSelected = -1;
+  initGrid(5); // Sets up the 25 tiles
 
-  // 5. Reset and restart the timer interval
-  if (timerInterval) clearInterval(timerInterval);
+  // 3. Set the state
+  gameState = "game";
+
+  // 4. Restart the timer only AFTER the state has changed
   timerInterval = setInterval(timeIt, 1000);
 
-  cursor(ARROW); // 6. Fix the cursor so it's not a 'hand' anymore
+  // 5. Cleanup visuals
+  cursor(ARROW);
+
+  console.log("State is now: " + gameState);
 }
