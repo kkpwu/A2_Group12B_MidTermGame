@@ -8,7 +8,7 @@
 
 **Pixel Alignment: Stability Crisis** is an interactive experience inspired by the symptoms of **Generalized Anxiety Disorder (GAD)**. GAD is a chronic condition characterized by excessive, persistent, and difficult-to-control worry across multiple domains of life.
 
-The game mirrors this psychological state by tasking the player with a simple organizational goal (aligning the grid) while intentionally overwhelming them with "mental noise" in the form of relentless, intrusive system pop-ups. These distractions represent the "excessive worry" that interferes with daily tasks, forcing the player to manage constant interruptions while under the pressure of a depleting timer.
+The game mirrors this psychological state by tasking the player with a simple organizational goal (matching the main grid to the target grid) while intentionally overwhelming them with "mental noise" in the form of relentless, intrusive system pop-ups. These distractions represent the "excessive worry" that interferes with daily tasks, forcing the player to manage constant interruptions while under the pressure of a depleting timer.
 
 ### Key Features:
 

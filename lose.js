@@ -44,9 +44,12 @@ function drawTryAgainButton() {
     cursor(ARROW);
   }
 
+  rectMode(CENTER); // Ensure the button draws from the center
   rect(btnX, btnY, 200, 50, 10);
 
   fill(0);
+  noStroke();
+  textAlign(CENTER, CENTER); // Ensure text is perfectly centered in the rect
   textSize(20);
   text("TRY AGAIN", btnX, btnY);
 }

@@ -73,7 +73,7 @@ function keyPressed() {
       gameState === "win" ||
       gameState === "lose"
     ) {
-      startGame();
+      startRealGame();
     }
   }
 }

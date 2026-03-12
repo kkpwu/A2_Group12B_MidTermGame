@@ -91,6 +91,8 @@ function handleMouseClicks() {
   else if (gameState === "win" || gameState === "lose") {
     let btnX = width / 2;
     let btnY = height / 2 + 70;
+
+    // Check if the mouse click is within the "TRY AGAIN" button boundaries
     if (
       mouseX > btnX - 100 &&
       mouseX < btnX + 100 &&
@@ -98,19 +100,28 @@ function handleMouseClicks() {
       mouseY < btnY + 25
     ) {
       firstSelected = -1;
-      gameState = "start";
+      cursor(ARROW); // Reset the cursor immediately
+
+      // THE FIX: Direct the player to the game, not the start menu
+      if (gameState === "lose") {
+        startRealGame();
+      } else {
+        gameState = "start"; // Wins can still go back to menu
+      }
     }
   }
 }
 
 function startRealGame() {
   gameState = "game";
+  timer = 60; // Reset the clock to full time
   firstSelected = -1;
-  initGrid(5); // Start the real 5x5 challenge
 
-  // Start the timer interval for the real game
+  // This uses your 5x5 layout logic
+  initGrid(5);
+
+  // Start the timer countdown
   if (timerInterval) clearInterval(timerInterval);
-  timer = 60;
   timerInterval = setInterval(timeIt, 1000);
 }
 
