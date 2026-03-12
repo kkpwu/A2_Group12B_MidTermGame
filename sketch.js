@@ -67,13 +67,10 @@ function keyPressed() {
   }
 
   if (key === "r" || key === "R") {
-    if (
-      gameState === "game" ||
-      gameState === "pause" ||
-      gameState === "win" ||
-      gameState === "lose"
-    ) {
+    if (gameState === "game") {
       startRealGame();
+    } else if (gameState === "tutorial") {
+      startGame();
     }
   }
 }
