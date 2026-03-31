@@ -1,8 +1,14 @@
 function drawGameScreen() {
-  drawTimerUI();
-  drawMainGrid(); // Found in grid.js
-  drawTargetGrid(); // Found in targetgrid.js
+  drawLevelHUD(); // Found in grid.js
+  drawTimerUI(); // Found in game.js
+  drawActiveGrid(); // Found in grid.js
+  drawTargetPreview(); // Found in targetgrid.js
   drawHomeButton(); // Found in grid.js
+
+  if (timer !== null && timer <= 0) {
+    gameState = "lose";
+    if (timerInterval) clearInterval(timerInterval);
+  }
 
   // Target Grid (Top Right)
   fill(255);
@@ -23,18 +29,4 @@ function drawTimerUI() {
 
   text(displayTime, width / 2, 100);
   pop();
-}
-
-function checkWin() {
-  let match = true;
-  for (let i = 0; i < 25; i++) {
-    if (playerGrid[i] !== targetGrid[i]) {
-      match = false;
-      break;
-    }
-  }
-  if (match) {
-    clearInterval(timerInterval);
-    gameState = "win";
-  }
 }

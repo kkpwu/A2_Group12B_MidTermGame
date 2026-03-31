@@ -2,8 +2,12 @@ function drawStartScreen() {
   push();
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
+  cursor(ARROW); // Reset cursor each frame
 
   // --- GAME TITLE ---
+  noStroke();
+  fill(30, 30, 30);
+  rect(400, 175, 655, 80, 10);
   fill(255);
   textSize(70);
   textStyle(BOLD);
@@ -14,22 +18,63 @@ function drawStartScreen() {
   text("A Stability Crisis", 400, 235);
 
   // --- PLAY BUTTON ---
-  fill(255, 150); // Semi-transparent white
+  let playX = 400, playY = 320, playW = 200, playH = 60;
+  
+  if (mouseX > playX - playW/2 && mouseX < playX + playW/2 && 
+      mouseY > playY - playH/2 && mouseY < playY + playH/2) {
+    fill(200); // Hover color
+    cursor(HAND);
+  } else {
+    fill(255, 150); // Normal color
+  }
+  
   noStroke();
-  rect(400, 300, 200, 60, 10); // Centered on canvas
-
-  fill(0); // Black text
+  rect(playX, playY, playW, playH, 10);
+  fill(0);
   textSize(32);
-  text("PLAY", 400, 300);
+  text("PLAY", playX, playY);
 
   // --- HOW TO PLAY BUTTON ---
-  fill(255, 150);
-  rect(400, 380, 200, 60, 10); // Positioned 80px below Play
+  let howX = 400, howY = 400, howW = 200, howH = 60;
 
+  if (mouseX > howX - howW/2 && mouseX < howX + howW/2 && 
+      mouseY > howY - howH/2 && mouseY < howY + howH/2) {
+    fill(200);
+    cursor(HAND);
+  } else {
+    fill(255, 150);
+  }
+
+  noStroke();
+  rect(howX, howY, howW, howH, 10);
   fill(0);
   textSize(24);
-  text("HOW TO PLAY", 400, 380);
+  text("HOW TO PLAY", howX, howY);
+
   pop();
+}
+
+function startLevel(levelKey) {
+  currentLevelKey = levelKey;
+  let config = LEVEL_CONFIG[levelKey];
+
+  initGrid(config.gridSize); // Creates the 4x4 or 5x5 array
+
+  // Set the state so the draw() loop knows which screen to show
+  if (levelKey === "tutorial") {
+    gameState = "tutorial";
+  } else {
+    gameState = "game"; // or "playing"
+  }
+
+  // Setup Timer
+  if (config.timer) {
+    timer = config.timer;
+    timerInterval = setInterval(timeIt, 1000);
+  } else {
+    if (timerInterval) clearInterval(timerInterval);
+    timer = null;
+  }
 }
 
 function handleMouseClicks() {
@@ -48,27 +93,32 @@ function handleMouseClicks() {
       mouseY > height / 2 - 25 &&
       mouseY < height / 2 + 25
     ) {
-      startRealGame();
+      let nextLevel = LEVEL_CONFIG[currentLevelKey].nextState;
+      startLevel(nextLevel); // Move to the next state defined in the config
     } else {
-      handleSwapInteractionTutorial();
+      handleUniversalSwap();
     }
   }
   // --- 2. START STATE ---
   else if (gameState === "start") {
-    let cx = width / 2;
-    let cy = height / 2;
+    let leftEdge = 400 - 100;
+    let rightEdge = 400 + 100;
+
+    // PLAY BUTTON
     if (
-      mouseX > cx - 100 &&
-      mouseX < cx + 100 &&
-      mouseY > cy - 30 &&
-      mouseY < cy + 30
+      mouseX > leftEdge &&
+      mouseX < rightEdge &&
+      mouseY > 320 - 30 &&
+      mouseY < 320 + 30
     ) {
-      startGame();
-    } else if (
-      mouseX > cx - 100 &&
-      mouseX < cx + 100 &&
-      mouseY > cy + 50 &&
-      mouseY < cy + 110
+      startLevel("tutorial");
+    }
+    // HOW TO PLAY BUTTON
+    else if (
+      mouseX > leftEdge &&
+      mouseX < rightEdge &&
+      mouseY > 400 - 30 &&
+      mouseY < 400 + 30
     ) {
       gameState = "instructions";
     }
@@ -83,7 +133,7 @@ function handleMouseClicks() {
     if (mouseX > 20 && mouseX < 100 && mouseY > 20 && mouseY < 60) {
       exitToHome();
     } else {
-      handleSwapInteraction();
+      handleUniversalSwap();
     }
   }
   // --- 5. END STATES ---
@@ -109,14 +159,14 @@ function handleMouseClicks() {
   }
 }
 
-function handleSwapInteraction() {
-  let dim = 5;
-  let size = 400; // Keep this consistent with your tutorial grid size
-  let cellSize = size / dim;
+function handleUniversalSwap() {
+  let config = LEVEL_CONFIG[currentLevelKey];
+  let dim = config.gridSize;
 
-  // Center the hitbox exactly like the drawGridAt(width/2, height/2 + 50) call
-  let startX = width / 2 - size / 2;
-  let startY = height / 2 + 50 - size / 2;
+  let totalGridArea = 350;
+  let cellSize = totalGridArea / dim;
+  let startX = width / 2 - totalGridArea / 2;
+  let startY = height / 2 + 50 - totalGridArea / 2;
 
   for (let i = 0; i < dim; i++) {
     for (let j = 0; j < dim; j++) {
@@ -135,11 +185,12 @@ function handleSwapInteraction() {
           firstSelected = clickedIndex;
         } else {
           if (firstSelected !== clickedIndex) {
+            // Perform the swap
             let temp = playerGrid[firstSelected];
             playerGrid[firstSelected] = playerGrid[clickedIndex];
             playerGrid[clickedIndex] = temp;
 
-            checkWin(); // Make sure this function exists to check for 5x5 win
+            checkLevelWin(); // Check if they finished this specific level
           }
           firstSelected = -1;
         }
@@ -148,52 +199,24 @@ function handleSwapInteraction() {
   }
 }
 
-function handleSwapInteractionTutorial() {
-  let gap = 220;
-  let wholeWidth = width - gap * 2;
-  let gridSize = wholeWidth / 5;
-  let startX = width / 2 - (width - 220 * 2) / 2;
-  let startY = height / 2 - (width - 220 * 2) / 2 + 50;
-
-  for (let i = 0; i < 5; i++) {
-    for (let j = 0; j < 5; j++) {
-      let xpos = startX + i * gridSize;
-      let ypos = startY + j * gridSize;
-
-      if (
-        mouseX > xpos &&
-        mouseX < xpos + gridSize &&
-        mouseY > ypos &&
-        mouseY < ypos + gridSize
-      ) {
-        let clickedIndex = i + j * 5;
-
-        if (firstSelected === -1) {
-          firstSelected = clickedIndex;
-        } else {
-          if (firstSelected !== clickedIndex) {
-            let temp = playerGrid[firstSelected];
-            playerGrid[firstSelected] = playerGrid[clickedIndex];
-            playerGrid[clickedIndex] = temp;
-            checkTutorialWin();
-          }
-          firstSelected = -1;
-        }
-      }
-    }
-  }
-}
-
-function checkTutorialWin() {
-  let isMatch = true;
+function checkLevelWin() {
+  let match = true;
   for (let i = 0; i < playerGrid.length; i++) {
     if (playerGrid[i] !== targetGrid[i]) {
-      isMatch = false;
+      match = false;
       break;
     }
   }
-  if (isMatch) {
-    startRealGame();
+
+  if (match) {
+    let nextLevel = LEVEL_CONFIG[currentLevelKey].nextState;
+
+    if (nextLevel === "win_screen") {
+      gameState = "win"; // They beat the whole game!
+    } else {
+      // Move to the next level in the config
+      startLevel(nextLevel);
+    }
   }
 }
 
@@ -212,12 +235,12 @@ function checkWin() {
 }
 
 function startGame() {
-  gameState = "tutorial";
-  isPopupActive = false;
-  timer = 60;
-  firstSelected = -1;
+  // Use our new universal starter!
+  startLevel("tutorial");
 
-  initGrid(5); // Initialize the 5x5 tutorial grid
+  // Close any leftovers
+  isPopupActive = false;
+  firstSelected = -1;
 }
 
 function initGrid(size) {
@@ -265,4 +288,13 @@ function startRealGame() {
   cursor(ARROW);
 
   console.log("State is now: " + gameState);
+}
+
+function timeIt() {
+  if (timer > 0) {
+    timer--;
+  } else {
+    // Timer hit zero
+    clearInterval(timerInterval);
+  }
 }

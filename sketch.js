@@ -26,30 +26,31 @@ function setup() {
 }
 
 function draw() {
-  background(20);
+  background(50); // Standard background color
+
+  // --- STATE MACHINE LOGIC ---
 
   if (gameState === "start") {
     if (startBG) image(startBG, 0, 0, width, height);
-    drawStartScreen();
+    drawStartScreen(); // (from start.js)
   } else if (gameState === "tutorial") {
     if (tutorialBG) image(tutorialBG, 0, 0, width, height);
-    drawTutorialScreen();
+    drawTutorialScreen(); // (from tutorial.js)
   } else if (gameState === "game") {
     if (gameBG) image(gameBG, 0, 0, width, height);
-    drawGameScreen();
-    handlePopups();
-    drawPopups();
+    drawGameScreen(); // (from game.js)
+    drawPopups(); // (from popups.js)
   } else if (gameState === "instructions") {
     if (instructionsBG) image(instructionsBG, 0, 0, width, height);
-    drawInstructionsScreen();
+    drawInstructionsScreen(); // (from instructions.js)
   } else if (gameState === "win") {
     if (winBG) image(winBG, 0, 0, width, height);
-    drawWinScreen();
+    drawWinScreen(); // (from win.js)
   } else if (gameState === "lose") {
     if (loseBG) image(loseBG, 0, 0, width, height);
-    drawLoseScreen();
+    drawLoseScreen(); // (from lose.js)
   } else if (gameState === "pause") {
-    drawPauseScreen();
+    drawPauseScreen(); // (from pause.js)
   }
 }
 
