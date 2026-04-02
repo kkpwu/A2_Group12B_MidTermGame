@@ -31,14 +31,14 @@ const LEVEL_CONFIG = {
     gridSize: 5,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 8000, // Every 8 seconds on average
+    popupFrequency: 5000, // Every 5 seconds on average
     nextState: "impossible",
   },
   impossible: {
-    gridSize: 5,
+    gridSize: 6,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 4000, // Every 4 seconds on average
+    popupFrequency: 3000, // Every 3 seconds on average
     nextState: "win_screen",
   },
 };
