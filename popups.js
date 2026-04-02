@@ -1,5 +1,5 @@
 let activePopups = [];
-let nextPopupTime = 10000; // First popup after 5 seconds
+let nextPopupTime = 5000; // First popup after 5 seconds
 
 function handlePopups() {
   let config = LEVEL_CONFIG[currentLevelKey];
@@ -79,7 +79,7 @@ function drawPopups() {
     text("Multiple errors detected!\nManual override required.", 0, 0);
 
     // 4. Button
-    drawOverrideButton(p.h);
+    drawOverrideButton(p.w, p.h);
     pop();
   }
 }
