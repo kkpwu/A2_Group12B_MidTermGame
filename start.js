@@ -194,12 +194,12 @@ function handleMouseClicks() {
   // --- 5. WIN / LOSE RESET ---
   else if (gameState === "win" || gameState === "lose") {
     let btnX = width / 2;
-    let btnY = height / 2 + 70;
+    let btnY = height / 2 + 170;
     if (
-      mouseX > btnX - 100 &&
-      mouseX < btnX + 100 &&
-      mouseY > btnY - 25 &&
-      mouseY < btnY + 25
+      mouseX > btnX - 150 &&
+      mouseX < btnX + 150 &&
+      mouseY > btnY - 45 &&
+      mouseY < btnY + 45
     ) {
       exitToHome();
     }

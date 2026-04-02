@@ -8,15 +8,15 @@ function drawWinScreen() {
 
   // 2. Add an overlay for readability
   rectMode(CENTER);
-  fill(0, 150);
-  rect(width / 2, height / 2, 400, 200, 20);
+  fill(0, 180);
+  rect(width / 2, height / 2, 450, 4504, 20);
 
   // 3. Victory Text
   fill(255);
-  noStroke();
-  textSize(48);
+  textStyle(BOLD);
+  textSize(80);
   textAlign(CENTER, CENTER);
-  text("VICTORY!", width / 2, height / 2 - 30);
+  text("VICTORY!", width / 2, height / 2 - 40);
 
   // 4. Play Again Button
   drawRestartButton();
@@ -24,16 +24,16 @@ function drawWinScreen() {
 
 function drawRestartButton() {
   let btnX = width / 2;
-  let btnY = height / 2 + 70;
+  let btnY = height / 2 + 170;
 
   // Hover effect: Change color if the mouse is over the button
   if (
-    mouseX > btnX - 100 &&
-    mouseX < btnX + 100 &&
-    mouseY > btnY - 25 &&
-    mouseY < btnY + 25
+    mouseX > btnX - 150 &&
+    mouseX < btnX + 150 &&
+    mouseY > btnY - 45 &&
+    mouseY < btnY + 45
   ) {
-    fill(255, 100, 100); // Lighter red on hover
+    fill('#75F74A'); // Lighter red on hover
     cursor(HAND);
   } else {
     fill(255);
@@ -41,11 +41,11 @@ function drawRestartButton() {
   }
 
   rectMode(CENTER); // Ensure the button draws from the center
-  rect(btnX, btnY, 200, 50, 10);
+  rect(btnX, btnY, 300, 90, 10);
 
   fill(0);
   noStroke();
   textAlign(CENTER, CENTER); // Ensure text is perfectly centered in the rect
-  textSize(20);
+  textSize(48);
   text("RESTART", btnX, btnY);
 }

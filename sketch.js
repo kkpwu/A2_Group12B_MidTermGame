@@ -13,7 +13,7 @@ let startBG,
 let timer = 60;
 let timerInterval;
 
-let palette = ["#FF4136", "#2ECC40", "#0074D9", "#FFDC00", "#F012BE"];
+let palette = ["#FF4136", "#2ECC40", "#0074D9", "#FFDC00", "#5900FF"];
 let targetGrid = [];
 let playerGrid = [];
 let firstSelected = -1;
@@ -31,7 +31,6 @@ function preload() {
 
   winBG = loadImage("assets/Win.png");
   loseBG = loadImage("assets/Lose.png");
-
   pauseBG = loadImage("assets/Pause.Page.png");
 }
 

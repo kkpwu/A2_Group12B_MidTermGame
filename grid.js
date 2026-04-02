@@ -126,7 +126,7 @@ function drawLevelHUD() {
 
   // Draw Level Title
   fill(255);
-  textSize(28);
+  textSize(100);
   textStyle(BOLD);
   text(displayName, width / 2, 20);
 

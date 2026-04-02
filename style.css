@@ -5,7 +5,7 @@ body {
   margin: 0;
   padding: 0;
   /* Dark background helps the game canvas stand out */
-  background-color: #1a1a1a;
+  background-color: #000000;
   /* Prevents scrolling if the canvas is slightly larger than the window */
   overflow: hidden;
   /* Centers the canvas on the screen */

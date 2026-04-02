@@ -21,8 +21,7 @@ function drawTimerUI() {
 
   noStroke();
   fill(255);
-  textSize(90);
-  textStyle(BOLD);
+  textSize(80);
   textAlign(CENTER, CENTER);
 
   let m = floor(timer / 60);
@@ -37,7 +36,7 @@ function drawTimerUI() {
   }
 
   // ONLY ONE text call here to avoid the double-text issue
-  text(displayTime, width / 2, 80);
+  text(displayTime, width / 2, 150);
   pop();
 }
 
