@@ -23,7 +23,7 @@ let startBG,
 let timer = 60;
 let timerInterval;
 
-let palette = ["#a30303", "#39ff03", "#011fff", "#f1d51f", "#8e51ff"];
+let palette = ["#df0707", "#39ff03", "#011fff", "#f1d51f", "#8e51ff"];
 let targetGrid = [];
 let playerGrid = [];
 let firstSelected = -1;
