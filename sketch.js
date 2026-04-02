@@ -1,5 +1,15 @@
 let gameState = "start";
 let currentLevelKey = "tutorial";
+
+// Background Music
+let musicLevel1, musicLevel2, musicLevel3, musicLevel4, musicFinal;
+
+// Sound Effects (SFX)
+let sfxError1, sfxError2;
+
+// Track the currently playing music so we can stop it when levels change
+let currentMusic = null;
+
 let startBG,
   tutorialBG,
   gameBG1,
@@ -19,6 +29,7 @@ let playerGrid = [];
 let firstSelected = -1;
 
 function preload() {
+  // Load Background Images
   startBG = loadImage("assets/Title.png");
   instructionsBG = loadImage("assets/Instructions.png");
   tutorialBG = loadImage("assets/Game.1.png");
@@ -32,6 +43,17 @@ function preload() {
   winBG = loadImage("assets/Win.png");
   loseBG = loadImage("assets/Lose.png");
   pauseBG = loadImage("assets/Pause.Page.png");
+
+  // Load Music Tracks
+  musicLevel1 = loadSound("assets/Level Music.1.mp3");
+  musicLevel2 = loadSound("assets/Level Music.2.mp3");
+  musicLevel3 = loadSound("assets/Level Music.3.mp3");
+  musicLevel4 = loadSound("assets/Level Music.4.mp3");
+  musicFinal = loadSound("assets/Final Level.mp3");
+
+  // Load SFX
+  sfxError1 = loadSound("assets/Error.1.mp3");
+  sfxError2 = loadSound("assets/Error.2.mp3");
 }
 
 function setup() {
@@ -79,6 +101,10 @@ function draw() {
 }
 
 function mousePressed() {
+  if (getAudioContext().state !== "running") {
+    getAudioContext().resume();
+  }
+
   handleMouseClicks(); // found in start.js for state management and universal click handling
 }
 
@@ -86,8 +112,14 @@ function keyPressed() {
   if (keyCode === 32) {
     if (gameState === "game") {
       gameState = "pause";
+      if (currentMusic && currentMusic.isPlaying()) {
+        currentMusic.pause();
+      }
     } else if (gameState === "pause") {
       gameState = "game";
+      if (currentMusic) {
+        currentMusic.play();
+      }
     }
     return false;
   }
@@ -98,6 +130,11 @@ function keyPressed() {
     } else if (gameState === "tutorial") {
       startGame();
     }
+  }
+
+  if (key === "c" || key === "C") {
+    activePopups = []; // Clear all popups manually by pressing 'C'
+    console.log("Popups cleared via cheat key");
   }
 }
 
@@ -127,5 +164,49 @@ function timeIt() {
       gameState = "lose";
       clearInterval(timerInterval);
     }
+  }
+}
+
+function playMusicForLevel(levelKey) {
+  // Stop whatever is playing now
+  if (currentMusic && currentMusic.isPlaying()) {
+    currentMusic.stop();
+  }
+
+  // Pick the new track based on the level
+  if (levelKey === "tutorial" || levelKey === "super_easy") {
+    currentMusic = musicLevel1;
+  } else if (levelKey === "easy") {
+    currentMusic = musicLevel2;
+  } else if (levelKey === "medium") {
+    currentMusic = musicLevel3;
+  } else if (levelKey === "hard") {
+    currentMusic = musicLevel4;
+  } else if (levelKey === "impossible") {
+    currentMusic = musicFinal;
+  }
+
+  // Play the new track on a loop
+  if (currentMusic) {
+    currentMusic.loop();
+    currentMusic.setVolume(0.5); // 50% volume so it's not too loud
+  }
+}
+
+function initGrid(size) {
+  let totalTiles = size * size;
+  targetGrid = [];
+
+  for (let i = 0; i < totalTiles; i++) {
+    targetGrid.push(floor(random(palette.length)));
+  }
+
+  playerGrid = [...targetGrid];
+
+  for (let i = playerGrid.length - 1; i > 0; i--) {
+    let j = floor(random(i + 1));
+    let temp = playerGrid[i];
+    playerGrid[i] = playerGrid[j];
+    playerGrid[j] = temp;
   }
 }

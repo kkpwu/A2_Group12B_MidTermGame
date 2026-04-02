@@ -1,36 +1,33 @@
 let rules =
-  "• Click the colored squares in the main grid to match the pattern on the target grid on the right side.\n" +
-  "• You have 60 seconds to finish each level.\n" +
-  "• Pop-ups will distract you as your progress - click them to dismiss!\n" +
-  "• Press SPACE to take a deep breath (Pause).\n" +
-  "• Press R to restart the game level.\n" +
-  "• Match the grid perfectly to win.";
+  "• Click the colored squares to match the target grid.\n" +
+  "• You have 60 seconds per level.\n" +
+  "• Pop-ups will appear - click them to dismiss!\n" +
+  "• [SPACE] to Pause.\n" +
+  "• [R] to Restart level.\n" +
+  "• [C] to Clear all pop-ups (Cheat Key).\n" +
+  "• Match the grid to win.\n" +
+  "Good luck, and have fun!";
 
 function drawInstructionsScreen() {
-  image(instructionsBG, 0, 0, width, height);
+  image(instructionsBG, 0, 0, width, height); // Semi-transparent overlay to make text readable
 
-  // Semi-transparent overlay to make text readable
   fill(0, 180);
   rectMode(CENTER);
-  rect(width / 2, height / 2, 900, 500, 20);
+  rect(width / 2, height / 2, 900, 500, 20); // Title text
 
-  // Title text
   fill(255);
   textSize(80);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
-  text("How To Play:", width / 2, height / 2 - 250);
+  text("How To Play:", width / 2, height / 2 - 250); // Rules text
 
-  // Rules text
   textStyle(NORMAL);
   textSize(28);
   fill(240);
   textAlign(CENTER, CENTER);
 
-  // Display the rules string you created
-  text(rules, width / 2, height / 2, 800, 400);
+  text(rules, width / 2, height / 2 - 40, 900, 300); // Back Button
 
-  // Back Button
   textAlign(CENTER, CENTER);
   drawButton(width / 2 - 150, height / 2 + 220, "BACK");
   drawButton(width / 2 + 150, height / 2 + 220, "START");
@@ -40,9 +37,8 @@ function checkInstructionClicks() {
   if (gameState === "instructions") {
     let btnY = height / 2 + 220; // This must match the draw call exactly!
     let backX = width / 2 - 150;
-    let startX = width / 2 + 150;
+    let startX = width / 2 + 150; // CHECK BACK BUTTON
 
-    // CHECK BACK BUTTON
     if (
       mouseX > backX - 100 &&
       mouseX < backX + 100 &&
@@ -51,9 +47,8 @@ function checkInstructionClicks() {
     ) {
       gameState = "start";
       cursor(ARROW);
-    }
+    } // CHECK START BUTTON
 
-    // CHECK START BUTTON
     if (
       mouseX > startX - 100 &&
       mouseX < startX + 100 &&
@@ -68,9 +63,8 @@ function checkInstructionClicks() {
 
 function drawButton(x, y, label) {
   push();
-  rectMode(CENTER);
+  rectMode(CENTER); // Hit detection for hover effect
 
-  // Hit detection for hover effect
   if (
     mouseX > x - 100 &&
     mouseX < x + 100 &&

@@ -1,6 +1,12 @@
 function drawGameScreen() {
-  // 1. Draw Background FIRST to clear the "ghost" text
-  if (gameBG1) image(gameBG1, 0, 0, width, height);
+  // 1. DYNAMIC BACKGROUND
+  let currentBG = gameBG1;
+  if (currentLevelKey === "easy") currentBG = gameBG2;
+  else if (currentLevelKey === "medium") currentBG = gameBG3;
+  else if (currentLevelKey === "hard") currentBG = gameBG4;
+  else if (currentLevelKey === "extreme") currentBG = gameBG5;
+
+  image(currentBG, 0, 0, width, height);
 
   // 2. Draw UI
   drawLevelHUD();
@@ -11,6 +17,9 @@ function drawGameScreen() {
 
   // 3. Logic
   if (timer <= 0) {
+    if (currentMusic && currentMusic.isPlaying()) {
+      currentMusic.stop();
+    }
     gameState = "lose";
   }
 }
@@ -52,7 +61,10 @@ function checkGameWin() {
   if (match) {
     // If they beat Super Easy, move to "Easy" (where popups start!)
     let nextLevel = LEVEL_CONFIG[currentLevelKey].nextState;
-    if (nextLevel === "win") {
+    if (nextLevel === "win_screen" || nextLevel === "win") {
+      if (currentMusic && currentMusic.isPlaying()) {
+        currentMusic.stop();
+      }
       gameState = "win";
     } else {
       startLevel(nextLevel);

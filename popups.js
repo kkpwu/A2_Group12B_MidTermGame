@@ -40,6 +40,10 @@ function spawnPopup() {
     shakeOffset: 0,
   };
 
+  // Play a random error sound when a popup appears!
+  if (random() > 0.5) sfxError1.play();
+  else sfxError2.play();
+
   activePopups.push(newPopup);
 }
 
@@ -90,19 +94,30 @@ function drawOverrideButton(popupHeight) {
 }
 
 function checkPopupClicks() {
-  // Check from the top (end of array) to bottom so we close the one on top first
+  // Loop backwards (top-most popup first)
   for (let i = activePopups.length - 1; i >= 0; i--) {
     let p = activePopups[i];
-    let btnY = p.y + p.h / 2 - 35;
 
+    // --- BUTTON HITBOX MATH ---
+    let btnW = 120;
+    let btnH = 30;
+    let btnX = p.x - btnW / 2; // Center X minus half width
+    let btnY = p.y + p.h / 2 - 35 - btnH / 2; // Local btnY converted to global
+
+    // Check if mouse is inside the OVERRIDE button
     if (
-      mouseX > p.x - 60 &&
-      mouseX < p.x + 60 &&
-      mouseY > btnY - 15 &&
-      mouseY < btnY + 15
+      mouseX > btnX &&
+      mouseX < btnX + btnW &&
+      mouseY > btnY &&
+      mouseY < btnY + btnH
     ) {
-      activePopups.splice(i, 1); // Remove this specific popup
-      return true; // Indicate that we handled a popup click
+      activePopups.splice(i, 1); // Remove the popup
+
+      if (sfxError2) {
+        sfxError2.setVolume(0.4);
+        sfxError2.play();
+      }
+      return true;
     }
   }
   return false;

@@ -9,7 +9,7 @@ function drawWinScreen() {
   // 2. Add an overlay for readability
   rectMode(CENTER);
   fill(0, 180);
-  rect(width / 2, height / 2, 450, 4504, 20);
+  rect(width / 2, height / 2, 450, 450, 20);
 
   // 3. Victory Text
   fill(255);
@@ -33,7 +33,7 @@ function drawRestartButton() {
     mouseY > btnY - 45 &&
     mouseY < btnY + 45
   ) {
-    fill('#75F74A'); // Lighter red on hover
+    fill("#75F74A"); // Lighter red on hover
     cursor(HAND);
   } else {
     fill(255);
