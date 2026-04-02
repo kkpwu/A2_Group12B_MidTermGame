@@ -1,5 +1,3 @@
-let currentLevelKey = "tutorial"; // Start here
-
 const LEVEL_CONFIG = {
   tutorial: {
     gridSize: 3,
@@ -19,28 +17,28 @@ const LEVEL_CONFIG = {
     gridSize: 4,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 0.2, // Low chance
+    popupFrequency: 24000, // Every 24 seconds on average
     nextState: "medium",
   },
   medium: {
     gridSize: 5,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 0.4,
+    popupFrequency: 18000, // Every 18 seconds on average
     nextState: "hard",
   },
   hard: {
     gridSize: 5,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 0.7, // Frequent
+    popupFrequency: 12000, // Every 12 seconds on average
     nextState: "impossible",
   },
   impossible: {
     gridSize: 5,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 1.0, // Constant chaos
+    popupFrequency: 7000, // Every 71 seconds on average
     nextState: "win_screen",
   },
 };

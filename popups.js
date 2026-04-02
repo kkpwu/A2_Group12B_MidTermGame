@@ -2,11 +2,23 @@ let activePopups = [];
 let nextPopupTime = 10000; // First popup after 5 seconds
 
 function handlePopups() {
-  if (gameState === "game") {
-    if (millis() > nextPopupTime) {
+  let config = LEVEL_CONFIG[currentLevelKey];
+
+  // 1. Only run if we are in game and popups are enabled for this level
+  if (gameState === "game" && config && config.popupsEnabled) {
+    if (millis() > nextPopupTime && activePopups.length < 8) {
       spawnPopup();
-      nextPopupTime = millis() + random(650, 2500);
+
+      // 2. Use the frequency from your config
+      let baseFreq = config.popupFrequency;
+      let variance = baseFreq * 0.2;
+
+      nextPopupTime =
+        millis() + random(baseFreq - variance, baseFreq + variance);
     }
+  } else if (gameState !== "game") {
+    // Clear popups if we go back to the menu or lose
+    activePopups = [];
   }
 }
 

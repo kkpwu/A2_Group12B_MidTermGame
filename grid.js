@@ -5,7 +5,7 @@ function drawActiveGrid() {
   let dim = config.gridSize;
 
   push();
-  let totalGridArea = 350;
+  let totalGridArea = 400;
   let cellSize = totalGridArea / dim;
   let centerX = width / 2;
   let centerY = height / 2 + 50;
@@ -67,23 +67,25 @@ function drawTargetPreview() {
   let dim = config.gridSize;
 
   push();
-  rectMode(CORNER); // <--- ADD THIS LINE TO FIX ALIGNMENT
+  rectMode(CORNER);
 
-  let targetTileSize = 20;
-  let margin = 60;
+  // --- CHANGE 1: SCALE THE SIZE ---
+  let totalSize = 120; // This is how wide/tall the whole target grid will be
+  let targetTileSize = totalSize / dim; // Automatically calculates tile size
 
-  let totalWidth = dim * targetTileSize;
-  let startX = width - totalWidth - margin;
-  let startY = 80;
+  // --- CHANGE 2 & 3: CENTER THE POSITION ---
+  let margin = 80;
+  let startX = width - totalSize - 150; // Positions it on the right
+  let startY = 100; // Lowered from 80 to fit the 1440x810 layout better
 
   // 1. Draw Background Box
-  fill(0, 100);
+  fill(0, 150);
   noStroke();
-  rect(startX - 5, startY - 5, totalWidth + 10, totalWidth + 10, 5);
+  rect(startX - 10, startY - 10, totalSize + 20, totalSize + 20, 15);
 
-  // 2. Draw Mini Tiles
+  // 2. Draw Tiles
   stroke(255);
-  strokeWeight(1);
+  strokeWeight(3);
 
   for (let i = 0; i < dim; i++) {
     for (let j = 0; j < dim; j++) {
@@ -91,23 +93,24 @@ function drawTargetPreview() {
 
       if (targetGrid[index] !== undefined) {
         fill(palette[targetGrid[index]]);
-        // Drawing squares in CORNER mode
         rect(
           startX + i * targetTileSize,
           startY + j * targetTileSize,
           targetTileSize,
           targetTileSize,
+          4, // Slight rounding on tiles
         );
       }
     }
   }
 
-  // --- LABEL ---
+  // --- UPDATED LABEL ---
   noStroke();
   fill(255);
-  textSize(14);
+  textSize(32); // Bigger text for the bigger grid
+  textStyle(BOLD);
   textAlign(CENTER);
-  text("TARGET", startX + totalWidth / 2, startY - 10);
+  text("TARGET", startX + totalSize / 2, startY - 25);
   pop();
 }
 
@@ -127,11 +130,5 @@ function drawLevelHUD() {
   textStyle(BOLD);
   text(displayName, width / 2, 20);
 
-  // Draw Timer
-  if (timer !== null) {
-    textSize(32);
-    if (timer <= 10) fill(255, 100, 100); // Turn red when low
-    text(timer + "s", width / 2, 60);
-  }
   pop();
 }

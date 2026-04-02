@@ -1,32 +1,62 @@
 function drawGameScreen() {
-  drawLevelHUD(); // Found in grid.js
-  drawTimerUI(); // Found in game.js
-  drawActiveGrid(); // Found in grid.js
-  drawTargetPreview(); // Found in targetgrid.js
-  drawHomeButton(); // Found in grid.js
+  // 1. Draw Background FIRST to clear the "ghost" text
+  if (gameBG1) image(gameBG1, 0, 0, width, height);
 
-  if (timer !== null && timer <= 0) {
+  // 2. Draw UI
+  drawLevelHUD();
+  drawTimerUI();
+  drawActiveGrid();
+  drawTargetPreview();
+  drawHomeButton();
+
+  // 3. Logic
+  if (timer <= 0) {
     gameState = "lose";
-    if (timerInterval) clearInterval(timerInterval);
   }
-
-  // Target Grid (Top Right)
-  fill(255);
-  textSize(14);
-  text("TARGET", width * 0.85 + 15, height * 0.2 - 55);
 }
-
 function drawTimerUI() {
   push();
+  // Clear any previous shadow settings to prevent "ghosting"
+  drawingContext.shadowBlur = 0;
+
   noStroke();
   fill(255);
-  textSize(80);
+  textSize(90);
+  textStyle(BOLD);
   textAlign(CENTER, CENTER);
 
   let m = floor(timer / 60);
   let s = timer % 60;
   let displayTime = m + ":" + (s < 10 ? "0" + s : s);
 
-  text(displayTime, width / 2, 100);
+  // If the time is low, change color, otherwise stay white
+  if (timer <= 10) {
+    fill(255, 50, 50);
+  } else {
+    fill(255);
+  }
+
+  // ONLY ONE text call here to avoid the double-text issue
+  text(displayTime, width / 2, 80);
   pop();
+}
+
+function checkGameWin() {
+  let match = true;
+  for (let i = 0; i < playerGrid.length; i++) {
+    if (playerGrid[i] !== targetGrid[i]) {
+      match = false;
+      break;
+    }
+  }
+
+  if (match) {
+    // If they beat Super Easy, move to "Easy" (where popups start!)
+    let nextLevel = LEVEL_CONFIG[currentLevelKey].nextState;
+    if (nextLevel === "win") {
+      gameState = "win";
+    } else {
+      startLevel(nextLevel);
+    }
+  }
 }

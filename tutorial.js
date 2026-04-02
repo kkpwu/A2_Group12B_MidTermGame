@@ -1,61 +1,97 @@
 function drawTutorialScreen() {
+  if (gameBG1) image(gameBG1, 0, 0, width, height);
+
   let cx = width / 2;
   let cy = height / 2;
 
   // --- UI TEXT ---
   fill(255);
   textAlign(CENTER, CENTER);
-  textSize(50);
-  textStyle(BOLD);
-  text("TUTORIAL", cx, 80);
 
-  textSize(18);
+  textSize(80); // Bigger Title
+  textStyle(BOLD);
+  text("TUTORIAL", cx, 100);
+
+  textSize(28); // Bigger Instructions
   textStyle(NORMAL);
+  fill(220);
   text(
-    "Click two tiles to swap them.\nMatch the pattern to the target grid on the right to win!",
+    "Click two tiles to swap them.\nMatch the pattern to the target grid to move on!",
     cx,
-    125,
+    180,
   );
 
-  drawActiveGrid(); // found in grid.js, but will use the 4x4 playerGrid for the tutorial
-  drawTargetPreview(width * 0.85, 120, 120);
+  // --- GRID & UI ELEMENTS ---
+  drawActiveGrid(); // found in grid.js
+  drawTargetPreview(); // found in grid.js
   drawSkipButton();
   drawHomeButton();
 }
 
 function drawSkipButton() {
-  let bx = width - 100;
+  let bx = width - 150; // Moved further in from the edge
   let by = height / 2;
-  let bw = 120;
-  let bh = 50;
+  let bw = 160; // Wider button
+  let bh = 70; // Taller button
 
   push();
   rectMode(CENTER);
 
-  // Check for hover
   if (
     mouseX > bx - bw / 2 &&
     mouseX < bx + bw / 2 &&
     mouseY > by - bh / 2 &&
     mouseY < by + bh / 2
   ) {
-    fill(200); // Gray on hover
+    fill("#75F74A"); // Bright green hover color
     cursor(HAND);
   } else {
-    fill(255, 150); // Semi-transparent white normally
+    fill(255, 180);
   }
 
-  // Draw the button shape
   stroke(0);
-  strokeWeight(2);
-  rect(bx, by, bw, bh, 10);
+  strokeWeight(3);
+  rect(bx, by, bw, bh, 15);
 
-  // Draw the text
   noStroke();
   fill(0);
-  textSize(20);
-  textAlign(CENTER, CENTER);
+  textSize(32); // Bigger text
+  textStyle(BOLD);
   text("SKIP", bx, by);
+  pop();
+}
+
+function drawHomeButton() {
+  push();
+  rectMode(CENTER);
+
+  // Positioned more comfortably in the 1440x810 corner
+  let btnX = 100;
+  let btnY = 60;
+  let btnW = 140;
+  let btnH = 60;
+
+  if (
+    mouseX > btnX - btnW / 2 &&
+    mouseX < btnX + btnW / 2 &&
+    mouseY > btnY - btnH / 2 &&
+    mouseY < btnY + btnH / 2
+  ) {
+    fill("#EEF777"); // Bright hover color
+    cursor(HAND);
+  } else {
+    fill(255);
+  }
+
+  stroke(0);
+  strokeWeight(3);
+  rect(btnX, btnY, btnW, btnH, 12);
+
+  noStroke();
+  fill(0);
+  textSize(24);
+  textStyle(BOLD);
+  text("HOME", btnX, btnY);
   pop();
 }
 
@@ -71,43 +107,6 @@ function checkTutorialWin() {
   if (match) {
     startRealGame(); // This moves them to the 5x5 game
   }
-}
-
-function drawHomeButton() {
-  push();
-  rectMode(CENTER);
-  textAlign(CENTER, CENTER);
-
-  // Position: Top left corner (adjust as needed for your Game.Page.png)
-  let btnX = 60;
-  let btnY = 40;
-  let btnW = 80;
-  let btnH = 40;
-
-  // Hover Effect
-  if (
-    mouseX > btnX - btnW / 2 &&
-    mouseX < btnX + btnW / 2 &&
-    mouseY > btnY - btnH / 2 &&
-    mouseY < btnY + btnH / 2
-  ) {
-    fill(200); // Gray on hover
-    cursor(HAND);
-  } else {
-    fill(255); // White normally
-    cursor(ARROW);
-  }
-
-  stroke(0);
-  strokeWeight(2);
-  rect(btnX, btnY, btnW, btnH, 10);
-
-  // Home Button
-  noStroke();
-  fill(0);
-  textSize(16);
-  text("HOME", btnX, btnY);
-  pop();
 }
 
 function exitToHome() {

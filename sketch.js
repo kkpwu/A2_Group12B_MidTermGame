@@ -1,5 +1,15 @@
 let gameState = "start";
-let startBG, instructionsBG, gameBG, winBG, loseBG, pauseBG;
+let currentLevelKey = "tutorial";
+let startBG,
+  tutorialBG,
+  gameBG1,
+  gameBG2,
+  gameBG3,
+  gameBG4,
+  gameBG5,
+  instructionsBG,
+  winBG,
+  loseBG;
 let timer = 60;
 let timerInterval;
 
@@ -9,19 +19,24 @@ let playerGrid = [];
 let firstSelected = -1;
 
 function preload() {
-  startBG = loadImage("assets/Title.Page.png");
-  instructionsBG = loadImage("assets/Instructions.Page.png");
-  gameBG = loadImage("assets/Game.Page.png");
-  tutorialBG = loadImage("assets/Tutorial.Page.png");
-  winBG = loadImage("assets/Win.Page.png");
-  loseBG = loadImage("assets/Lose.Page.png");
+  startBG = loadImage("assets/Title.png");
+  instructionsBG = loadImage("assets/Instructions.png");
+  tutorialBG = loadImage("assets/Game.1.png");
+
+  gameBG1 = loadImage("assets/Game.1.png");
+  gameBG2 = loadImage("assets/Game.2.png");
+  gameBG3 = loadImage("assets/Game.3.png");
+  gameBG4 = loadImage("assets/Game.4.png");
+  gameBG5 = loadImage("assets/Game.5.png");
+
+  winBG = loadImage("assets/Win.png");
+  loseBG = loadImage("assets/Lose.png");
+
   pauseBG = loadImage("assets/Pause.Page.png");
 }
 
 function setup() {
-  createCanvas(800, 600);
-  randomizeTarget();
-  randomizePlayerGrid();
+  createCanvas(1440, 810);
   textAlign(CENTER, CENTER);
 }
 
@@ -37,9 +52,19 @@ function draw() {
     if (tutorialBG) image(tutorialBG, 0, 0, width, height);
     drawTutorialScreen(); // (from tutorial.js)
   } else if (gameState === "game") {
-    if (gameBG) image(gameBG, 0, 0, width, height);
-    drawGameScreen(); // (from game.js)
-    drawPopups(); // (from popups.js)
+    // --- DYNAMIC BACKGROUND PICKER ---
+    let currentBG = gameBG1;
+
+    if (currentLevelKey === "easy") currentBG = gameBG2;
+    else if (currentLevelKey === "medium") currentBG = gameBG3;
+    else if (currentLevelKey === "hard") currentBG = gameBG4;
+    else if (currentLevelKey === "extreme") currentBG = gameBG5;
+
+    image(currentBG, 0, 0, width, height);
+
+    drawGameScreen(); // Handles the grid and HUD
+    handlePopups();
+    drawPopups();
   } else if (gameState === "instructions") {
     if (instructionsBG) image(instructionsBG, 0, 0, width, height);
     drawInstructionsScreen(); // (from instructions.js)
@@ -55,7 +80,7 @@ function draw() {
 }
 
 function mousePressed() {
-  handleMouseClicks();
+  handleMouseClicks(); // found in start.js for state management and universal click handling
 }
 
 function keyPressed() {

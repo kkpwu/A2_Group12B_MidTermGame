@@ -1,56 +1,94 @@
 let rules =
-  "• Click the colored squares in the main grid to match the pattern on the target grid.\n" +
-  "• You have 60 seconds to finish.\n" +
-  "• Pop-ups will distract you - click them to dismiss!\n" +
+  "• Click the colored squares in the main grid to match the pattern on the target grid on the right side.\n" +
+  "• You have 60 seconds to finish each level.\n" +
+  "• Pop-ups will distract you as your progress - click them to dismiss!\n" +
   "• Press SPACE to take a deep breath (Pause).\n" +
-  "• Press R to restart the game.\n" +
+  "• Press R to restart the game level.\n" +
   "• Match the grid perfectly to win.";
 
 function drawInstructionsScreen() {
   image(instructionsBG, 0, 0, width, height);
 
   // Semi-transparent overlay to make text readable
-  fill(0, 150);
+  fill(0, 180);
   rectMode(CENTER);
-  rect(width / 2, height / 2, 600, 400, 10);
+  rect(width / 2, height / 2, 900, 500, 20);
 
   // Title text
   fill(255);
-  textSize(42);
-  text("How To Play:", width / 2, height / 2 - 150);
+  textSize(80);
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  text("How To Play:", width / 2, height / 2 - 250);
 
   // Rules text
-  textSize(20);
+  textStyle(NORMAL);
+  textSize(28);
+  fill(240);
   textAlign(CENTER, CENTER);
 
   // Display the rules string you created
-  text(rules, width / 2, height / 2, 500, 300);
+  text(rules, width / 2, height / 2, 800, 400);
 
   // Back Button
   textAlign(CENTER, CENTER);
-  drawButton(width / 2, height / 2 + 150, "Back");
+  drawButton(width / 2 - 150, height / 2 + 220, "BACK");
+  drawButton(width / 2 + 150, height / 2 + 220, "START");
 }
 
 function checkInstructionClicks() {
   if (gameState === "instructions") {
-    // Check if Back button is clicked
+    let btnY = height / 2 + 220; // This must match the draw call exactly!
+    let backX = width / 2 - 150;
+    let startX = width / 2 + 150;
+
+    // CHECK BACK BUTTON
     if (
-      mouseX > width / 2 - 100 &&
-      mouseX < width / 2 + 100 &&
-      mouseY > height / 2 + 150 - 25 &&
-      mouseY < height / 2 + 150 + 25
+      mouseX > backX - 100 &&
+      mouseX < backX + 100 &&
+      mouseY > btnY - 40 &&
+      mouseY < btnY + 40
     ) {
       gameState = "start";
+      cursor(ARROW);
+    }
+
+    // CHECK START BUTTON
+    if (
+      mouseX > startX - 100 &&
+      mouseX < startX + 100 &&
+      mouseY > btnY - 40 &&
+      mouseY < btnY + 40
+    ) {
+      startLevel("tutorial"); // Jump straight into the game
+      cursor(ARROW);
     }
   }
 }
 
 function drawButton(x, y, label) {
-  fill(255, 100);
-  noStroke();
+  push();
   rectMode(CENTER);
-  rect(x, y, 150, 50, 10);
-  fill(255);
-  textSize(20);
+
+  // Hit detection for hover effect
+  if (
+    mouseX > x - 100 &&
+    mouseX < x + 100 &&
+    mouseY > y - 40 &&
+    mouseY < y + 40
+  ) {
+    fill(255, 200);
+    cursor(HAND);
+  } else {
+    fill(255, 100);
+  }
+
+  noStroke();
+  rect(x, y, 200, 80, 15);
+
+  fill(0);
+  textSize(32);
+  textStyle(BOLD);
   text(label, x, y);
+  pop();
 }

@@ -7,39 +7,53 @@ function drawStartScreen() {
   // --- GAME TITLE ---
   noStroke();
   fill(30, 30, 30);
-  rect(400, 175, 655, 80, 10);
+  rect(720, 240, 1500, 120, 10);
   fill(255);
-  textSize(70);
+  textSize(125);
   textStyle(BOLD);
-  text("PIXEL ALIGNMENT", 400, 180);
+  text("PIXEL ALIGNMENT", 720, 250);
 
-  textSize(45);
+  textSize(85);
   fill(200);
-  text("A Stability Crisis", 400, 235);
+  text("A Stability Crisis", 720, 350);
 
   // --- PLAY BUTTON ---
-  let playX = 400, playY = 320, playW = 200, playH = 60;
-  
-  if (mouseX > playX - playW/2 && mouseX < playX + playW/2 && 
-      mouseY > playY - playH/2 && mouseY < playY + playH/2) {
-    fill(200); // Hover color
+  let playX = 720,
+    playY = 450,
+    playW = 500,
+    playH = 80;
+
+  if (
+    mouseX > playX - playW / 2 &&
+    mouseX < playX + playW / 2 &&
+    mouseY > playY - playH / 2 &&
+    mouseY < playY + playH / 2
+  ) {
+    fill("#75F74A"); // Hover color
     cursor(HAND);
   } else {
     fill(255, 150); // Normal color
   }
-  
+
   noStroke();
   rect(playX, playY, playW, playH, 10);
   fill(0);
-  textSize(32);
+  textSize(50);
   text("PLAY", playX, playY);
 
   // --- HOW TO PLAY BUTTON ---
-  let howX = 400, howY = 400, howW = 200, howH = 60;
+  let howX = 720,
+    howY = 550,
+    howW = 500,
+    howH = 60;
 
-  if (mouseX > howX - howW/2 && mouseX < howX + howW/2 && 
-      mouseY > howY - howH/2 && mouseY < howY + howH/2) {
-    fill(200);
+  if (
+    mouseX > howX - howW / 2 &&
+    mouseX < howX + howW / 2 &&
+    mouseY > howY - howH / 2 &&
+    mouseY < howY + howH / 2
+  ) {
+    fill("#EEF777"); // Hover color
     cursor(HAND);
   } else {
     fill(255, 150);
@@ -59,102 +73,135 @@ function startLevel(levelKey) {
   let config = LEVEL_CONFIG[levelKey];
 
   initGrid(config.gridSize); // Creates the 4x4 or 5x5 array
+  gameState = levelKey === "tutorial" ? "tutorial" : "game";
 
   // Set the state so the draw() loop knows which screen to show
   if (levelKey === "tutorial") {
     gameState = "tutorial";
   } else {
-    gameState = "game"; // or "playing"
+    gameState = "game"; // Level 1 (super_easy) hits this line
+  }
+
+  // --- RESET POPUP TIMER ---
+  if (config.popupsEnabled) {
+    // Set the first popup to happen after the first frequency interval
+    nextPopupTime = millis() + config.popupFrequency;
   }
 
   // Setup Timer
+  if (timerInterval) clearInterval(timerInterval);
   if (config.timer) {
     timer = config.timer;
     timerInterval = setInterval(timeIt, 1000);
-  } else {
-    if (timerInterval) clearInterval(timerInterval);
-    timer = null;
   }
 }
 
 function handleMouseClicks() {
-  if (activePopups.length > 0) {
+  if (activePopups && activePopups.length > 0) {
     checkPopupClicks();
     return;
   }
 
-  // --- 1. TUTORIAL STATE ---
-  if (gameState === "tutorial") {
-    if (mouseX > 20 && mouseX < 100 && mouseY > 20 && mouseY < 60) {
+  // --- 1. START STATE (Main Menu) ---
+  if (gameState === "start") {
+    let playX = width / 2; // Was 720, now dynamic center
+    let playY = 450;
+    let playW = 500;
+    let playH = 80;
+
+    // PLAY BUTTON CLICK
+    if (
+      mouseX > playX - playW / 2 &&
+      mouseX < playX + playW / 2 &&
+      mouseY > playY - playH / 2 &&
+      mouseY < playY + playH / 2
+    ) {
+      startLevel("tutorial");
+    }
+
+    // HOW TO PLAY CLICK
+    let howY = 550;
+    let howH = 60;
+    if (
+      mouseX > playX - playW / 2 &&
+      mouseX < playX + playW / 2 &&
+      mouseY > howY - howH / 2 &&
+      mouseY < howY + howH / 2
+    ) {
+      gameState = "instructions";
+    }
+  }
+
+  // --- 2. INSTRUCTIONS SCREEN ---
+  else if (gameState === "instructions") {
+    let btnY = height / 2 + 220;
+    let backX = width / 2 - 150;
+    let startX = width / 2 + 150;
+
+    // BACK BUTTON
+    if (
+      mouseX > backX - 100 &&
+      mouseX < backX + 100 &&
+      mouseY > btnY - 40 &&
+      mouseY < btnY + 40
+    ) {
+      gameState = "start";
+      cursor(ARROW);
+    }
+
+    // START BUTTON
+    if (
+      mouseX > startX - 100 &&
+      mouseX < startX + 100 &&
+      mouseY > btnY - 40 &&
+      mouseY < btnY + 40
+    ) {
+      startLevel("tutorial");
+      cursor(ARROW);
+    }
+  }
+
+  // --- 3. TUTORIAL STATE ---
+  else if (gameState === "tutorial") {
+    // Home Button (Top Left)
+    if (mouseX > 20 && mouseX < 120 && mouseY > 20 && mouseY < 70) {
       exitToHome();
-    } else if (
+    }
+    // Skip Button (Right Side)
+    else if (
       mouseX > width - 160 &&
       mouseX < width - 40 &&
       mouseY > height / 2 - 25 &&
       mouseY < height / 2 + 25
     ) {
       let nextLevel = LEVEL_CONFIG[currentLevelKey].nextState;
-      startLevel(nextLevel); // Move to the next state defined in the config
+      startLevel(nextLevel);
     } else {
       handleUniversalSwap();
     }
   }
-  // --- 2. START STATE ---
-  else if (gameState === "start") {
-    let leftEdge = 400 - 100;
-    let rightEdge = 400 + 100;
 
-    // PLAY BUTTON
-    if (
-      mouseX > leftEdge &&
-      mouseX < rightEdge &&
-      mouseY > 320 - 30 &&
-      mouseY < 320 + 30
-    ) {
-      startLevel("tutorial");
-    }
-    // HOW TO PLAY BUTTON
-    else if (
-      mouseX > leftEdge &&
-      mouseX < rightEdge &&
-      mouseY > 400 - 30 &&
-      mouseY < 400 + 30
-    ) {
-      gameState = "instructions";
-    }
-  }
-  // --- 3. INSTRUCTIONS STATE ---
-  else if (gameState === "instructions") {
-    checkInstructionClicks();
-  }
   // --- 4. GAME STATE ---
   else if (gameState === "game") {
-    // Check Home Button
-    if (mouseX > 20 && mouseX < 100 && mouseY > 20 && mouseY < 60) {
+    // Home Button check
+    if (mouseX > 20 && mouseX < 120 && mouseY > 20 && mouseY < 70) {
       exitToHome();
     } else {
       handleUniversalSwap();
     }
   }
-  // --- 5. END STATES ---
+
+  // --- 5. WIN / LOSE RESET ---
   else if (gameState === "win" || gameState === "lose") {
     let btnX = width / 2;
     let btnY = height / 2 + 70;
-
     if (
       mouseX > btnX - 100 &&
       mouseX < btnX + 100 &&
       mouseY > btnY - 25 &&
       mouseY < btnY + 25
     ) {
-      // RESET LOGIC
-      firstSelected = -1;
-      if (timerInterval) clearInterval(timerInterval); // Kill the old timer
-
-      gameState = "start"; // Take them back to the Menu
-      cursor(ARROW); // Fix the cursor
-
-      console.log("Returning to Main Menu...");
+      exitToHome();
     }
   }
 }
@@ -235,10 +282,8 @@ function checkWin() {
 }
 
 function startGame() {
-  // Use our new universal starter!
   startLevel("tutorial");
 
-  // Close any leftovers
   isPopupActive = false;
   firstSelected = -1;
 }
@@ -288,13 +333,4 @@ function startRealGame() {
   cursor(ARROW);
 
   console.log("State is now: " + gameState);
-}
-
-function timeIt() {
-  if (timer > 0) {
-    timer--;
-  } else {
-    // Timer hit zero
-    clearInterval(timerInterval);
-  }
 }
