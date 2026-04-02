@@ -17,14 +17,14 @@ const LEVEL_CONFIG = {
     gridSize: 4,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 18000, // Every 18 seconds on average
+    popupFrequency: 12000, // Every 12 seconds on average
     nextState: "medium",
   },
   medium: {
     gridSize: 4,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 12000, // Every 12 seconds on average
+    popupFrequency: 8000, // Every 8 seconds on average
     nextState: "hard",
   },
   hard: {
