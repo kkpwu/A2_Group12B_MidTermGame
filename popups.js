@@ -23,8 +23,8 @@ function handlePopups() {
 }
 
 function spawnPopup() {
-  let w = random(250, 400);
-  let h = random(150, 250);
+  let w = random(400, 550);
+  let h = random(300, 450);
 
   let newPopup = {
     x: random(w / 2, width - w / 2),
@@ -56,25 +56,26 @@ function drawPopups() {
     // 1. Box Body
     fill(240);
     stroke(200, 0, 0);
-    strokeWeight(4);
+    strokeWeight(6);
     rect(0, 0, p.w, p.h, 5);
 
     // 2. Flashing Title Bar
     if (frameCount % 20 < 10) fill(180, 0, 0);
     else fill(255, 0, 0);
-    rect(0, -p.h / 2 + 20, p.w, 40, 5, 5, 0, 0);
+    rect(0, -p.h / 2 + 25, p.w - 12, 50, 5, 5, 0, 0);
 
     // 3. Text
     textAlign(CENTER, CENTER);
     noStroke();
     fill(255);
-    textSize(16);
+    textSize(32);
     textStyle(BOLD);
-    text(p.title, 0, -p.h / 2 + 20);
+    textSize(Math.min(32, p.w / 12));
+    text(p.title, 0, -p.h / 2 + 25);
 
     fill(0);
     textStyle(NORMAL);
-    textSize(13);
+    textSize(24);
     text("Multiple errors detected!\nManual override required.", 0, 0);
 
     // 4. Button
@@ -83,13 +84,22 @@ function drawPopups() {
   }
 }
 
-function drawOverrideButton(popupHeight) {
-  let btnY = popupHeight / 2 - 35;
+function drawOverrideButton(popupWidth, popupHeight) {
+  let btnW = 250;
+  let btnH = 60;
+  let btnY = popupHeight / 2 - 50;
+
+  // Button Box
   fill(200);
   stroke(0);
-  rect(0, btnY, 120, 30, 3);
+  strokeWeight(2);
+  rect(0, btnY, btnW, btnH, 5);
+
+  // Button Text
   fill(0);
   noStroke();
+  textSize(28);
+  textStyle(BOLD);
   text("OVERRIDE", 0, btnY);
 }
 
@@ -99,10 +109,10 @@ function checkPopupClicks() {
     let p = activePopups[i];
 
     // --- BUTTON HITBOX MATH ---
-    let btnW = 120;
-    let btnH = 30;
-    let btnX = p.x - btnW / 2; // Center X minus half width
-    let btnY = p.y + p.h / 2 - 35 - btnH / 2; // Local btnY converted to global
+    let btnW = 250;
+    let btnH = 60;
+    let btnX = p.x - btnW / 2;
+    let btnY = p.y + p.h / 2 - 50 - btnH / 2;
 
     // Check if mouse is inside the OVERRIDE button
     if (
