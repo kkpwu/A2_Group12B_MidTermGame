@@ -45,15 +45,15 @@ function preload() {
   pauseBG = loadImage("assets/Pause.Page.png");
 
   // Load Music Tracks
-  musicLevel1 = loadSound("assets/Level Music.1.mp3");
-  musicLevel2 = loadSound("assets/Level Music.2.mp3");
-  musicLevel3 = loadSound("assets/Level Music.3.mp3");
-  musicLevel4 = loadSound("assets/Level Music.4.mp3");
-  musicFinal = loadSound("assets/Final Level.mp3");
+  musicLevel1 = loadSound("assets/sounds/Level Music.1.mp3");
+  musicLevel2 = loadSound("assets/sounds/Level Music.2.mp3");
+  musicLevel3 = loadSound("assets/sounds/Level Music.3.mp3");
+  musicLevel4 = loadSound("assets/sounds/Level Music.4.mp3");
+  musicFinal = loadSound("assets/sounds/Final Level.mp3");
 
   // Load SFX
-  sfxError1 = loadSound("assets/Error.1.mp3");
-  sfxError2 = loadSound("assets/Error.2.mp3");
+  sfxError1 = loadSound("assets/sounds/Error.1.mp3");
+  sfxError2 = loadSound("assets/sounds/Error.2.mp3");
 }
 
 function setup() {
