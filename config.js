@@ -17,28 +17,28 @@ const LEVEL_CONFIG = {
     gridSize: 4,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 12000, // Every 12 seconds on average
+    popupFrequency: 10000, // Every 10 seconds on average
     nextState: "medium",
   },
   medium: {
     gridSize: 4,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 8000, // Every 8 seconds on average
+    popupFrequency: 6000, // Every 6 seconds on average
     nextState: "hard",
   },
   hard: {
     gridSize: 5,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 5000, // Every 5 seconds on average
+    popupFrequency: 4000, // Every 4 seconds on average
     nextState: "impossible",
   },
   impossible: {
     gridSize: 6,
     timer: 60,
     popupsEnabled: true,
-    popupFrequency: 3000, // Every 3 seconds on average
+    popupFrequency: 1500, // Every 1.5 seconds on average
     nextState: "win_screen",
   },
 };
