@@ -13,14 +13,15 @@ function drawLoseScreen() {
 
   // 3. Game Over Text
   fill(255, 50, 50); // Bright red text
-  textSize(50);
+  textSize(80);
+  textStyle(BOLD);
   textAlign(CENTER, CENTER);
   text("GAME OVER", width / 2, height / 2 - 40);
 
   // 4. Subtext
   fill(255);
-  textSize(20);
-  text("The hourglass has run out...", width / 2, height / 2 + 10);
+  textSize(48);
+  text("The hourglass has run out...", width / 2, height / 2 + 40);
 
   // 5. Try Again Button
   drawTryAgainButton();
@@ -28,25 +29,28 @@ function drawLoseScreen() {
 
 function drawTryAgainButton() {
   let btnX = width / 2;
-  let btnY = height / 2 + 70;
+  let btnY = height / 2 + 170;
 
   // Hover effect: Change color if the mouse is over the button
   if (
-    mouseX > btnX - 100 &&
-    mouseX < btnX + 100 &&
-    mouseY > btnY - 25 &&
-    mouseY < btnY + 25
+    mouseX > btnX - 150 &&
+    mouseX < btnX + 150 &&
+    mouseY > btnY - 45 &&
+    mouseY < btnY + 45
   ) {
-    fill(255, 100, 100); // Lighter red on hover
+    fill("#75F74A"); // Bright green hover color
     cursor(HAND);
   } else {
     fill(255);
     cursor(ARROW);
   }
 
-  rect(btnX, btnY, 200, 50, 10);
+  rectMode(CENTER); // Ensure the button draws from the center
+  rect(btnX, btnY, 300, 90, 10);
 
   fill(0);
-  textSize(20);
+  noStroke();
+  textAlign(CENTER, CENTER); // Ensure text is perfectly centered in the rect
+  textSize(48);
   text("TRY AGAIN", btnX, btnY);
 }

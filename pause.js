@@ -1,30 +1,40 @@
 function drawPauseScreen() {
   push();
+  // 1. Background image (Scaling to the new 1440x810 size)
   if (pauseBG) {
     image(pauseBG, 0, 0, width, height);
   }
 
-  // 2. The Text Box
+  // Define our center point for easier math
+  let centerX = width / 2;
+  let centerY = height / 2;
+
+  // 2. The Text Box - Centered horizontally and vertically
   rectMode(CENTER);
-  fill(255, 150);
+  fill(255, 180); // Semi-transparent white
   noStroke();
-  rect(400, 235, 400, 180, 20);
+  // Centering the box at (centerX, centerY)
+  rect(centerX, centerY - 15, 700, 250, 20);
 
-  // 3. Text - Adjusted to stay inside the higher box
+  // 3. Text - Positioned relative to the center
   textAlign(CENTER, CENTER);
-  fill(50); // Dark grey text
   noStroke();
 
-  textSize(40);
-  text("PAUSED", 400, 190);
+  // "PAUSED"
+  fill(50);
+  textSize(80);
+  text("PAUSED", centerX, centerY - 65);
 
-  textSize(22);
-  text("Take a deep breath...", 400, 235);
+  // Subtitle
+  textSize(48);
+  text("Take a deep breath...", centerX, centerY);
 
+  // Instructions
   fill(120);
-  textSize(14);
-  text("Press SPACE to Resume", 400, 275);
+  textSize(32);
+  text("Press SPACE to Resume", centerX, centerY + 50);
+
   fill(150, 50, 50);
-  text("Press 'R' to Restart Challenge", 400, 300);
+  text("Press 'R' to Restart Challenge", centerX, centerY + 80);
   pop();
 }
