@@ -1,17 +1,33 @@
 function drawGameScreen() {
+  // 1. DYNAMIC BACKGROUND
+  let currentBG = gameBG1;
+  if (currentLevelKey === "easy") currentBG = gameBG2;
+  else if (currentLevelKey === "medium") currentBG = gameBG3;
+  else if (currentLevelKey === "hard") currentBG = gameBG4;
+  else if (currentLevelKey === "extreme") currentBG = gameBG5;
+
+  image(currentBG, 0, 0, width, height);
+
+  // 2. Draw UI
+  drawLevelHUD();
   drawTimerUI();
-  drawMainGrid(); // Found in grid.js
-  drawTargetGrid(); // Found in targetgrid.js
-  drawHomeButton(); // Found in grid.js
+  drawActiveGrid();
+  drawTargetPreview();
+  drawHomeButton();
 
-  // Target Grid (Top Right)
-  fill(255);
-  textSize(14);
-  text("TARGET", width * 0.85 + 15, height * 0.2 - 55);
+  // 3. Logic
+  if (timer <= 0) {
+    if (currentMusic && currentMusic.isPlaying()) {
+      currentMusic.stop();
+    }
+    gameState = "lose";
+  }
 }
-
 function drawTimerUI() {
   push();
+  // Clear any previous shadow settings to prevent "ghosting"
+  drawingContext.shadowBlur = 0;
+
   noStroke();
   fill(255);
   textSize(80);
@@ -21,20 +37,37 @@ function drawTimerUI() {
   let s = timer % 60;
   let displayTime = m + ":" + (s < 10 ? "0" + s : s);
 
-  text(displayTime, width / 2, 100);
+  // If the time is low, change color, otherwise stay white
+  if (timer <= 10) {
+    fill(255, 50, 50);
+  } else {
+    fill(255);
+  }
+
+  // ONLY ONE text call here to avoid the double-text issue
+  text(displayTime, width / 2, 150);
   pop();
 }
 
-function checkWin() {
+function checkGameWin() {
   let match = true;
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < playerGrid.length; i++) {
     if (playerGrid[i] !== targetGrid[i]) {
       match = false;
       break;
     }
   }
+
   if (match) {
-    clearInterval(timerInterval);
-    gameState = "win";
+    // If they beat Super Easy, move to "Easy" (where popups start!)
+    let nextLevel = LEVEL_CONFIG[currentLevelKey].nextState;
+    if (nextLevel === "win_screen" || nextLevel === "win") {
+      if (currentMusic && currentMusic.isPlaying()) {
+        currentMusic.stop();
+      }
+      gameState = "win";
+    } else {
+      startLevel(nextLevel);
+    }
   }
 }

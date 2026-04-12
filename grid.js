@@ -1,88 +1,134 @@
-function drawMainGrid() {
+function drawActiveGrid() {
+  if (!currentLevelKey || !LEVEL_CONFIG[currentLevelKey]) return;
+
+  let config = LEVEL_CONFIG[currentLevelKey];
+  let dim = config.gridSize;
+
   push();
+  let totalGridArea = 400;
+  let cellSize = totalGridArea / dim;
+  let centerX = width / 2;
+  let centerY = height / 2 + 50;
 
-  // 1. Precise Centering Math
-  let gap = 220;
-  let wholeWidth = width - gap * 2; // 360px
-  let gridSize = wholeWidth / 5;
-
-  // These must be calculated exactly like this to stay centered
-  let startX = width / 2 - wholeWidth / 2;
-  let startY = height / 2 - wholeWidth / 2 + 50;
-
-  // 2. Draw the Container (White background box)
+  // 1. Draw the Background Container
   rectMode(CENTER);
   fill(255);
   noStroke();
-  // Centered at 400, 350 to match your Game.Page.png layout
-  rect(400, 350, wholeWidth + 20, wholeWidth + 20, 15);
+  rect(centerX, centerY, totalGridArea + 20, totalGridArea + 20, 15);
 
-  // 3. Draw the Squares
+  // 2. Calculate Top-Left Start Point
+  let startX = centerX - totalGridArea / 2;
+  let startY = centerY - totalGridArea / 2;
+
+  // 3. Draw the Colored Tiles
   rectMode(CORNER);
-  for (let i = 0; i < 5; i++) {
-    for (let j = 0; j < 5; j++) {
-      let xpos = startX + i * gridSize;
-      let ypos = startY + j * gridSize;
-      let index = i + j * 5;
+  for (let i = 0; i < dim; i++) {
+    for (let j = 0; j < dim; j++) {
+      let index = i + j * dim;
+      let xpos = startX + i * cellSize;
+      let ypos = startY + j * cellSize;
 
-      if (index !== firstSelected) {
-        strokeWeight(5);
-        stroke(0);
+      strokeWeight(5);
+      stroke(0);
+
+      if (playerGrid[index] !== undefined) {
         fill(palette[playerGrid[index]]);
-        square(xpos, ypos, gridSize);
+        rect(xpos, ypos, cellSize, cellSize);
       }
     }
   }
 
-  // 4. Draw Highlighted Square last (so all 4 yellow lines show)
+  // 4. Draw the Highlight (Drawn AFTER the loops so it's on top)
   if (firstSelected !== -1) {
-    let i = firstSelected % 5;
-    let j = Math.floor(firstSelected / 5);
-    let xpos = startX + i * gridSize;
-    let ypos = startY + j * gridSize;
+    let col = firstSelected % dim;
+    let row = floor(firstSelected / dim);
+    let hX = startX + col * cellSize;
+    let hY = startY + row * cellSize;
 
+    noFill();
+    stroke(255, 255, 0); // Bright Yellow
     strokeWeight(6);
-    stroke(255, 255, 0); // Solid yellow
-    fill(palette[playerGrid[firstSelected]]);
-    square(xpos, ypos, gridSize);
+    // Draw the highlight rectangle
+    rect(hX, hY, cellSize, cellSize);
+
+    // Optional: Add a second inner stroke for better visibility on white/yellow tiles
+    stroke(0);
+    strokeWeight(1);
+    rect(hX + 3, hY + 3, cellSize - 6, cellSize - 6);
   }
 
   pop();
 }
 
-function drawHomeButton() {
+function drawTargetPreview() {
+  if (!currentLevelKey || !LEVEL_CONFIG[currentLevelKey]) return;
+
+  let config = LEVEL_CONFIG[currentLevelKey];
+  let dim = config.gridSize;
+
   push();
-  rectMode(CENTER);
-  textAlign(CENTER, CENTER);
+  rectMode(CORNER);
 
-  // Position: Top left corner (adjust as needed for your Game.Page.png)
-  let btnX = 60;
-  let btnY = 40;
-  let btnW = 80;
-  let btnH = 40;
+  // --- CHANGE 1: SCALE THE SIZE ---
+  let totalSize = 120; // This is how wide/tall the whole target grid will be
+  let targetTileSize = totalSize / dim; // Automatically calculates tile size
 
-  // Hover Effect
-  if (
-    mouseX > btnX - btnW / 2 &&
-    mouseX < btnX + btnW / 2 &&
-    mouseY > btnY - btnH / 2 &&
-    mouseY < btnY + btnH / 2
-  ) {
-    fill(200); // Gray on hover
-    cursor(HAND);
-  } else {
-    fill(255); // White normally
-    cursor(ARROW);
+  // --- CHANGE 2 & 3: CENTER THE POSITION ---
+  let margin = 80;
+  let startX = width - totalSize - 150; // Positions it on the right
+  let startY = 100; // Lowered from 80 to fit the 1440x810 layout better
+
+  // 1. Draw Background Box
+  fill(0, 150);
+  noStroke();
+  rect(startX - 10, startY - 10, totalSize + 20, totalSize + 20, 15);
+
+  // 2. Draw Tiles
+  stroke(255);
+  strokeWeight(3);
+
+  for (let i = 0; i < dim; i++) {
+    for (let j = 0; j < dim; j++) {
+      let index = i + j * dim;
+
+      if (targetGrid[index] !== undefined) {
+        fill(palette[targetGrid[index]]);
+        rect(
+          startX + i * targetTileSize,
+          startY + j * targetTileSize,
+          targetTileSize,
+          targetTileSize,
+          4, // Slight rounding on tiles
+        );
+      }
+    }
   }
 
-  stroke(0);
-  strokeWeight(2);
-  rect(btnX, btnY, btnW, btnH, 10);
-
-  // Home Icon or Text
+  // --- UPDATED LABEL ---
   noStroke();
-  fill(0);
-  textSize(16);
-  text("HOME", btnX, btnY);
+  fill(255);
+  textSize(32); // Bigger text for the bigger grid
+  textStyle(BOLD);
+  textAlign(CENTER);
+  text("TARGET", startX + totalSize / 2, startY - 25);
+  pop();
+}
+
+function drawLevelHUD() {
+  if (!currentLevelKey || !LEVEL_CONFIG[currentLevelKey]) return;
+
+  let config = LEVEL_CONFIG[currentLevelKey];
+  // Replaces underscores with spaces for the screen (e.g. "super_easy" -> "SUPER EASY")
+  let displayName = currentLevelKey.replace("_", " ").toUpperCase();
+
+  push();
+  textAlign(CENTER, TOP);
+
+  // Draw Level Title
+  fill(255);
+  textSize(100);
+  textStyle(BOLD);
+  text(displayName, width / 2, 20);
+
   pop();
 }
